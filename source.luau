@@ -378,7 +378,7 @@ function Library:CreateWindow(options)
             FloatingBottomBar.Size = UDim2.new(1, 0, 0, 6 * currentScale)
             FloatingBottomBar.Position = UDim2.new(0, 0, 0.5, -(3 * currentScale))
         else
-            BottomDragHitbox.Visible = false
+
         end
     end)
 
@@ -436,9 +436,7 @@ function Library:CreateWindow(options)
     function Window:SetTransparency(val)
         Window.CurrentTransparency = val
         if MainFrame.Visible then
-            Tween(MainFrame, {BackgroundTransparency = val}, 0.3)
-            -- Dynamic floating bottom bar transparency control integrated
-            Tween(FloatingBottomBar, {BackgroundTransparency = val > 0 and 0.2 or 0}, 0.3)
+
         end
     end
 
@@ -449,7 +447,6 @@ function Library:CreateWindow(options)
         Tween(BottomBarStroke, {Transparency = 1}, 0.4)
         task.wait(0.3)
         MainFrame.Visible = false
-        BottomDragHitbox.Visible = false
         Sphere.Visible = true
         Tween(Sphere, {Size = UDim2.new(0, 50, 0, 50)}, 0.4)
         
@@ -471,11 +468,8 @@ function Library:CreateWindow(options)
         task.wait(0.2)
         Sphere.Visible = false
         MainFrame.Visible = true
-        BottomDragHitbox.Visible = true
         Tween(MainScale, {Scale = 1}, 0.4)
         Tween(MainFrame, {BackgroundTransparency = Window.CurrentTransparency}, 0.4)
-        Tween(FloatingBottomBar, {BackgroundTransparency = Window.CurrentTransparency > 0 and 0.2 or 0}, 0.4)
-        Tween(BottomBarStroke, {Transparency = 0}, 0.4)
     end)
 
     local Popup = Create("Frame", {Parent = ScreenGui, BackgroundColor3 = Color3.fromRGB(0, 0, 0), BackgroundTransparency = 1, Size = UDim2.new(1, 0, 1, 0), ZIndex = 100, Visible = false, Active = true})
