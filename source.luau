@@ -329,59 +329,6 @@ function Library:CreateWindow(options)
     Tween(MainScale, {Scale = 1}, 0.5)
     Tween(MainFrame, {BackgroundTransparency = 0}, 0.5)
 
-    -- // CORE ENGINE ADDITION: Floating Bottom Bar Natively Attached to ScreenGui
-    
-    -- The Drag Hitbox (Invisible but large for easy grabbing)
-    local BottomDragHitbox = Create("Frame", {
-        Parent = ScreenGui,
-        BackgroundTransparency = 1,
-        Size = UDim2.new(0, 350, 0, 30),
-        AnchorPoint = Vector2.new(0.5, 0.5),
-        ZIndex = 145,
-        Active = true
-    })
-
-    -- The Visible Modern Bar (Sleeker, pill-shaped, dark gray outline)
-    local FloatingBottomBar = Create("Frame", {
-        Parent = BottomDragHitbox,
-        BackgroundColor3 = CardColor,
-        BackgroundTransparency = 1,
-        Size = UDim2.new(1, 0, 0, 6),
-        Position = UDim2.new(0, 0, 0.5, -3),
-        ZIndex = 146
-    })
-    Create("UICorner", {Parent = FloatingBottomBar, CornerRadius = UDim.new(0, 0)})
-    local BottomBarStroke = Create("UIStroke", {
-        Parent = FloatingBottomBar, 
-        Color = Color3.fromRGB(50, 50, 55), 
-        Thickness = 1.2, 
-        Transparency = 1
-    })
-
-    -- Drags MainFrame when the larger invisible hitbox is pulled. Sync is perfect.
-    MakeDraggable(BottomDragHitbox, MainFrame)
-
-    RunService.RenderStepped:Connect(function()
-        if MainFrame and MainFrame.Visible then
-            BottomDragHitbox.Visible = true
-            local currentScale = MainScale.Scale
-            local frameHeight = 420 * currentScale
-            local frameWidth = 650 * currentScale
-            
-            BottomDragHitbox.Position = UDim2.new(
-                MainFrame.Position.X.Scale,
-                MainFrame.Position.X.Offset,
-                MainFrame.Position.Y.Scale,
-                MainFrame.Position.Y.Offset + (frameHeight / 2) + 20
-            )
-            BottomDragHitbox.Size = UDim2.new(0, frameWidth * 0.6, 0, 30 * currentScale)
-            FloatingBottomBar.Size = UDim2.new(1, 0, 0, 6 * currentScale)
-            FloatingBottomBar.Position = UDim2.new(0, 0, 0.5, -(3 * currentScale))
-        else
-
-        end
-    end)
-
     local TopBar = Create("Frame", {Parent = MainFrame, BackgroundColor3 = BackgroundColor, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 40), Position = UDim2.new(0, 0, 0, 0), Active = true})
     MakeDraggable(TopBar, MainFrame)
     
@@ -436,15 +383,13 @@ function Library:CreateWindow(options)
     function Window:SetTransparency(val)
         Window.CurrentTransparency = val
         if MainFrame.Visible then
-
+            Tween(MainFrame, {BackgroundTransparency = val}, 0.3)
         end
     end
 
     MinBtn.MouseButton1Click:Connect(function()
         Tween(MainScale, {Scale = 0}, 0.4)
         Tween(MainFrame, {BackgroundTransparency = 1}, 0.4)
-        Tween(FloatingBottomBar, {BackgroundTransparency = 1}, 0.4)
-        Tween(BottomBarStroke, {Transparency = 1}, 0.4)
         task.wait(0.3)
         MainFrame.Visible = false
         Sphere.Visible = true
@@ -468,8 +413,11 @@ function Library:CreateWindow(options)
         task.wait(0.2)
         Sphere.Visible = false
         MainFrame.Visible = true
+        BottomDragHitbox.Visible = true
         Tween(MainScale, {Scale = 1}, 0.4)
         Tween(MainFrame, {BackgroundTransparency = Window.CurrentTransparency}, 0.4)
+        Tween(FloatingBottomBar, {BackgroundTransparency = Window.CurrentTransparency > 0 and 0.2 or 0}, 0.4)
+        Tween(BottomBarStroke, {Transparency = 0}, 0.4)
     end)
 
     local Popup = Create("Frame", {Parent = ScreenGui, BackgroundColor3 = Color3.fromRGB(0, 0, 0), BackgroundTransparency = 1, Size = UDim2.new(1, 0, 1, 0), ZIndex = 100, Visible = false, Active = true})
@@ -508,8 +456,6 @@ function Library:CreateWindow(options)
         Tween(NoBtn, {BackgroundTransparency = 1, TextTransparency = 1}, 0.3)
         Tween(MainScale, {Scale = 0.8}, 0.3)
         Tween(MainFrame, {BackgroundTransparency = 1}, 0.3)
-        Tween(FloatingBottomBar, {BackgroundTransparency = 1}, 0.3)
-        Tween(BottomBarStroke, {Transparency = 1}, 0.3)
 
         for _, desc in ipairs(MainFrame:GetDescendants()) do
             if desc:IsA("TextLabel") or desc:IsA("TextButton") or desc:IsA("TextBox") then Tween(desc, {TextTransparency = 1}, 0.3) if desc.BackgroundTransparency < 1 then Tween(desc, {BackgroundTransparency = 1}, 0.3) end
