@@ -345,7 +345,7 @@ function Library:CreateWindow(options)
     local FloatingBottomBar = Create("Frame", {
         Parent = BottomDragHitbox,
         BackgroundColor3 = CardColor,
-        BackgroundTransparency = 0,
+        BackgroundTransparency = 1,
         Size = UDim2.new(1, 0, 0, 6),
         Position = UDim2.new(0, 0, 0.5, -3),
         ZIndex = 146
@@ -355,7 +355,7 @@ function Library:CreateWindow(options)
         Parent = FloatingBottomBar, 
         Color = Color3.fromRGB(50, 50, 55), 
         Thickness = 1.2, 
-        Transparency = 0
+        Transparency = 1
     })
 
     -- Drags MainFrame when the larger invisible hitbox is pulled. Sync is perfect.
