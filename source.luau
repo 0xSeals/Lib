@@ -1,5 +1,6 @@
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
+local ContextActionService = game:GetService("ContextActionService")
 local CoreGui = game:GetService("CoreGui")
 local RunService = game:GetService("RunService")
 local HttpService = game:GetService("HttpService")
@@ -53,7 +54,6 @@ local function Create(className, properties)
 	if className == "TextLabel" or className == "TextButton" or className == "TextBox" then
 		instance.TextStrokeTransparency = 1
 		instance.TextStrokeColor3 = Color3.new(0, 0, 0)
-		instance.TextStrokeTransparency = 1
 		if properties.TextSize and properties.RichText ~= true then
 			instance.TextScaled = true
 			local constraint = Instance.new("UITextSizeConstraint")
@@ -628,22 +628,8 @@ function Library:CreateWindow(options)
 	local MainScale = Create("UIScale", { Parent = MainFrame, Scale = 0.8 })
 	Create("UICorner", { Parent = MainFrame, CornerRadius = UDim.new(0, 14) })
 	
-	-- Soft outer glow. Kept outside MainFrame so ClipsDescendants cannot cut it off.
-	local MainGlowOuter = Create("Frame", {
-		Name = "MoonGlow",
-		Parent = ScreenGui,
-		BackgroundTransparency = 1,
-		Size = UDim2.new(0, 804, 0, 524),
-		Position = UDim2.new(0.5, 0, 0.5, 0),
-		AnchorPoint = Vector2.new(0.5, 0.5),
-		ZIndex = 0,
-		Active = false,
-	})
-	Create("UICorner", { Parent = MainGlowOuter, CornerRadius = UDim.new(0, 21) })
-	Create("UIStroke", { Parent = MainGlowOuter, Color = AccentColor, Thickness = 5, Transparency = 0.965 })
-	Tween(MainScale, { Scale = 1 }, 0.5)
-	Tween(MainFrame, { BackgroundTransparency = 0 }, 0.5)
-	
+	-- No outer glow: keep the window edge clean and flat.
+
 
 	local TopBar = Create(
 		"Frame",
@@ -657,17 +643,6 @@ function Library:CreateWindow(options)
 		}
 	)
 	MakeDraggable(TopBar, MainFrame)
-	MainGlowOuter.Position = MainFrame.Position
-	MainGlowOuter.Size = UDim2.new(0, 804, 0, 524)
-	local GlowSync
-	GlowSync = RunService.RenderStepped:Connect(function()
-		if not ScreenGui.Parent then
-			GlowSync:Disconnect()
-			return
-		end
-		MainGlowOuter.Position = MainFrame.Position
-		MainGlowOuter.Visible = false
-	end)
 
 	local titleOffsetX = 16
 	if topbarLogo then
@@ -918,7 +893,6 @@ function Library:CreateWindow(options)
 		else
 			Tween(MainScale, { Scale = 0 }, 0.35)
 			Tween(MainFrame, { BackgroundTransparency = 1 }, 0.35)
-			Tween(MainGlowOuter:FindFirstChild("UIStroke"), { Transparency = 1 }, 0.35)
 			task.delay(0.28, function()
 				if not MainFrame.Visible then return end
 				MainFrame.Visible = false
@@ -937,16 +911,24 @@ function Library:CreateWindow(options)
 		SetWindowVisible(false, true)
 	end)
 
-	UserInputService.InputBegan:Connect(function(input, gameProcessed)
-		if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == ToggleKey then
-			if Popup.Visible then return end
-			if MainFrame.Visible then
-				SetWindowVisible(false, true)
-			else
-				SetWindowVisible(true, true)
+	-- Reliable keyboard toggle. ContextActionService receives the key even when Roblox marks input as processed.
+	local ToggleActionName = "MoonLib_Toggle_" .. tostring(math.random(100000, 999999))
+	ContextActionService:BindActionAtPriority(
+		ToggleActionName,
+		function(_, inputState, inputObject)
+			if inputState == Enum.UserInputState.Begin and inputObject.KeyCode == ToggleKey then
+				if Popup.Visible then
+					return Enum.ContextActionResult.Sink
+				end
+				SetWindowVisible(not MainFrame.Visible, true)
+				return Enum.ContextActionResult.Sink
 			end
-		end
-	end)
+			return Enum.ContextActionResult.Pass
+		end,
+		false,
+		Enum.ContextActionPriority.High.Value,
+		ToggleKey
+	)
 
 	-- The old floating sphere is intentionally disabled; the keyboard toggle is the only minimize/re-open control.
 	Sphere.Visible = false
@@ -1418,7 +1400,7 @@ function Library:CreateWindow(options)
 					"Frame",
 					{
 						Parent = targetColumn,
-						BackgroundColor3 = Color3.fromRGB(18, 22, 30),
+						BackgroundColor3 = CardColor,
 						Size = UDim2.new(1, 0, 0, 42),
 						AutomaticSize = Enum.AutomaticSize.Y,
 						ClipsDescendants = false,
@@ -1428,17 +1410,9 @@ function Library:CreateWindow(options)
 				local SectionStroke = Create("UIStroke", {
 					Parent = SectionContainer,
 					Color = Color3.fromRGB(52, 68, 91),
-					Thickness = 1,
+					Thickness = 1.25,
 					Transparency = 0.18,
 					ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-				})
-				Create("UIGradient", {
-					Parent = SectionContainer,
-					Rotation = 90,
-					Color = ColorSequence.new({
-						ColorSequenceKeypoint.new(0, Color3.fromRGB(19, 23, 31)),
-						ColorSequenceKeypoint.new(1, Color3.fromRGB(12, 15, 21)),
-					}),
 				})
 
 				table.insert(Window.AllCards, {
