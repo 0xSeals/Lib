@@ -1,5 +1,3 @@
--- // ZyronX UI Library (Core Engine) - Optimized for Zero Lag Loops
-
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 local CoreGui = game:GetService("CoreGui")
@@ -965,7 +963,7 @@ function Library:CreateWindow(options)
 		"TextLabel",
 		{
 			Parent = PopupCard,
-			Text = "Are you sure you want to close ZyronX? Unsaved configurations might be lost.",
+			Text = "Are you sure you want to close Moon? Unsaved configurations might be lost.",
 			Font = Enum.Font.Gotham,
 			TextSize = 13,
 			TextColor3 = SubTextColor,
@@ -2298,7 +2296,7 @@ function Library:CreateWindow(options)
 				end
 
 				function Elements:AddConfigManager(folderName)
-					folderName = folderName or "zyronxSavers"
+					folderName = folderName or "MoonHub"
 					if not _isfolder(folderName) then
 						_makefolder(folderName)
 					end
