@@ -611,7 +611,7 @@ function Library:CreateWindow(options)
 			Size = UDim2.new(0, 780, 0, 500),
 			Position = UDim2.new(0.5, 0, 0.5, 0),
 			AnchorPoint = Vector2.new(0.5, 0.5),
-			ClipsDescendants = true,
+			ClipsDescendants = false,
 			BackgroundTransparency = 1,
 			Active = true,
 			ZIndex = 1,
@@ -1408,7 +1408,9 @@ function Library:CreateWindow(options)
 				Create("UICorner", { Parent = SectionContainer, CornerRadius = UDim.new(0, 12) })
 				Create("UIStroke", { Parent = SectionContainer, Color = BorderColor, Thickness = 1, Transparency = 0.08, ApplyStrokeMode = Enum.ApplyStrokeMode.Border })
 				Create("UIGradient", { Parent = SectionContainer, Rotation = 90, Color = ColorSequence.new({ ColorSequenceKeypoint.new(0, Color3.fromRGB(22, 17, 38)), ColorSequenceKeypoint.new(1, CardColor) }), Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0), NumberSequenceKeypoint.new(1, 0.12) }) })
-				local SectionGlow = Create("UIStroke", { Parent = SectionContainer, Color = AccentColor, Thickness = 1, Transparency = 0.9, ApplyStrokeMode = Enum.ApplyStrokeMode.Border })
+				local SectionGlow = Create("Frame", { Parent = SectionContainer, BackgroundTransparency = 1, Size = UDim2.new(1, -4, 1, -4), Position = UDim2.new(0.5, 0, 0.5, 0), AnchorPoint = Vector2.new(0.5, 0.5), ZIndex = 0 })
+				Create("UICorner", { Parent = SectionGlow, CornerRadius = UDim.new(0, 13) })
+				Create("UIStroke", { Parent = SectionGlow, Color = AccentColor, Thickness = 1, Transparency = 0.92 })
 
 				table.insert(Window.AllCards, {
 					Card = SectionContainer,
