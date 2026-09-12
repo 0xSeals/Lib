@@ -323,10 +323,10 @@ function Library:CreateWindow(options)
     end
 
     local MainFrame = Create("Frame", {Parent = ScreenGui, BackgroundColor3 = BackgroundColor, Size = UDim2.new(0, 1220, 0, 760), Position = UDim2.new(0.5, 0, 0.5, 0), AnchorPoint = Vector2.new(0.5, 0.5), ClipsDescendants = true, BackgroundTransparency = 1, Active = true})
-    local MainScale = Create("UIScale", {Parent = MainFrame, Scale = 0.8})
+    local MainScale = Create("UIScale", {Parent = MainFrame, Scale = 0.5})
     Create("UICorner", {Parent = MainFrame, CornerRadius = UDim.new(0, 14)})
     Create("UIStroke", {Parent = MainFrame, Color = Color3.fromRGB(105, 45, 170), Thickness = 1.5})
-    Tween(MainScale, {Scale = 1}, 0.5)
+    Tween(MainScale, {Scale = 0.5}, 0.5)
     Tween(MainFrame, {BackgroundTransparency = 0}, 0.5)
 
     local TopBar = Create("Frame", {Parent = MainFrame, BackgroundColor3 = BackgroundColor, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 40), Position = UDim2.new(0, 0, 0, 0), Active = true})
@@ -407,7 +407,7 @@ function Library:CreateWindow(options)
         task.wait(0.2)
         Sphere.Visible = false
         MainFrame.Visible = true
-        Tween(MainScale, {Scale = 1}, 0.4)
+        Tween(MainScale, {Scale = 0.5}, 0.4)
         Tween(MainFrame, {BackgroundTransparency = Window.CurrentTransparency}, 0.4)
     end)
 
@@ -445,7 +445,7 @@ function Library:CreateWindow(options)
         Tween(PopupText, {TextTransparency = 1}, 0.3)
         Tween(YesBtn, {BackgroundTransparency = 1, TextTransparency = 1}, 0.3)
         Tween(NoBtn, {BackgroundTransparency = 1, TextTransparency = 1}, 0.3)
-        Tween(MainScale, {Scale = 0.8}, 0.3)
+        Tween(MainScale, {Scale = 0.5}, 0.3)
         Tween(MainFrame, {BackgroundTransparency = 1}, 0.3)
 
         for _, desc in ipairs(MainFrame:GetDescendants()) do
@@ -1256,4 +1256,3 @@ function Library:CreateWindow(options)
 end
 
 return Library
-
