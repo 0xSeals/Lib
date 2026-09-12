@@ -130,12 +130,12 @@ local function MakeDraggable(topbar, object)
     end)
 end
 
-local AccentColor = Color3.fromRGB(150, 0, 255)
-local BackgroundColor = Color3.fromRGB(3, 18, 32)
-local CardColor = Color3.fromRGB(5, 28, 48)
-local HoverColor = Color3.fromRGB(8, 43, 70)
+local AccentColor = Color3.fromRGB(170, 0, 255)
+local BackgroundColor = Color3.fromRGB(2, 15, 28)
+local CardColor = Color3.fromRGB(4, 25, 43)
+local HoverColor = Color3.fromRGB(9, 40, 67)
 local TextColor = Color3.fromRGB(235, 245, 255)
-local SubTextColor = Color3.fromRGB(150, 205, 235)
+local SubTextColor = Color3.fromRGB(145, 205, 235)
 
 -- // Global Notification API
 local GlobalNotifContainer
@@ -147,7 +147,7 @@ function Library:Notify(options)
     local duration = options.Duration or 3
 
     local Notif = Create("Frame", {Parent = GlobalNotifContainer, BackgroundColor3 = Color3.fromRGB(20, 20, 22), Size = UDim2.new(1, 0, 0, 65), BackgroundTransparency = 1, ZIndex = 201, ClipsDescendants = true})
-    Create("UICorner", {Parent = Notif, CornerRadius = UDim.new(0, 0)})
+    Create("UICorner", {Parent = Notif, CornerRadius = UDim.new(0, 10)})
     local Stroke = Create("UIStroke", {Parent = Notif, Color = AccentColor, Thickness = 1.5, Transparency = 1})
 
     local TitleText = Create("TextLabel", {Parent = Notif, Text = title, Font = Enum.Font.GothamBold, TextSize = 13, TextColor3 = TextColor, BackgroundTransparency = 1, Position = UDim2.new(0, 15, 0, 15), Size = UDim2.new(1, -30, 0, 15), TextXAlignment = Enum.TextXAlignment.Left, TextTransparency = 1, ZIndex = 202})
@@ -226,7 +226,7 @@ function Library:CreateWindow(options)
 
     local function SendPremiumNotification()
         local Notif = Create("Frame", {Parent = NotifContainer, BackgroundColor3 = Color3.fromRGB(20, 20, 22), Size = UDim2.new(1, 0, 0, 65), BackgroundTransparency = 1, ZIndex = 201, ClipsDescendants = true})
-        Create("UICorner", {Parent = Notif, CornerRadius = UDim.new(0, 0)})
+        Create("UICorner", {Parent = Notif, CornerRadius = UDim.new(0, 10)})
         
         local Stroke = Create("UIStroke", {Parent = Notif, Thickness = 1.5, Transparency = 1})
         local StrokeGrad = Create("UIGradient", {Parent = Stroke, Color = ColorSequence.new(Color3.fromRGB(255, 215, 0), Color3.fromRGB(180, 130, 20)), Rotation = 45})
@@ -259,7 +259,7 @@ function Library:CreateWindow(options)
 
     local InfoOverlay = Create("Frame", {Parent = ScreenGui, BackgroundColor3 = Color3.fromRGB(5, 5, 8), BackgroundTransparency = 1, Size = UDim2.new(1, 0, 1, 0), ZIndex = 150, Visible = false, Active = true})
     local InfoCard = Create("Frame", {Parent = InfoOverlay, BackgroundColor3 = Color3.fromRGB(16, 16, 20), Size = UDim2.new(0, 360, 0, 280), Position = UDim2.new(0.5, 0, 0.5, 0), AnchorPoint = Vector2.new(0.5, 0.5), ZIndex = 151, BackgroundTransparency = 1, ClipsDescendants = true})
-    Create("UICorner", {Parent = InfoCard, CornerRadius = UDim.new(0, 0)})
+    Create("UICorner", {Parent = InfoCard, CornerRadius = UDim.new(0, 10)})
     Create("UIStroke", {Parent = InfoCard, Color = AccentColor, Thickness = 1.5, Transparency = 1})
     local InfoScale = Create("UIScale", {Parent = InfoCard, Scale = 0})
 
@@ -272,7 +272,7 @@ function Library:CreateWindow(options)
     local InfoLayout = Create("UIListLayout", {Parent = InfoScroll, SortOrder = Enum.SortOrder.LayoutOrder, Padding = UDim.new(0, 10)})
     local InfoDesc = Create("TextLabel", {Parent = InfoScroll, Text = "", Font = Enum.Font.Gotham, TextSize = 13, TextColor3 = SubTextColor, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top, TextWrapped = true, AutomaticSize = Enum.AutomaticSize.Y, ZIndex = 152, TextTransparency = 1})
     local InfoExampleBox = Create("Frame", {Parent = InfoScroll, BackgroundColor3 = Color3.fromRGB(10, 10, 12), Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, Visible = false, ZIndex = 152})
-    Create("UICorner", {Parent = InfoExampleBox, CornerRadius = UDim.new(0, 0)})
+    Create("UICorner", {Parent = InfoExampleBox, CornerRadius = UDim.new(0, 10)})
     Create("UIStroke", {Parent = InfoExampleBox, Color = Color3.fromRGB(40, 40, 45), Thickness = 1})
     local InfoExampleText = Create("TextLabel", {Parent = InfoExampleBox, Text = "", Font = Enum.Font.Code, TextSize = 12, TextColor3 = AccentColor, BackgroundTransparency = 1, Size = UDim2.new(1, -20, 0, 0), Position = UDim2.new(0, 10, 0, 10), TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top, TextWrapped = true, AutomaticSize = Enum.AutomaticSize.Y, ZIndex = 152, TextTransparency = 1})
     Create("UIPadding", {Parent = InfoExampleBox, PaddingBottom = UDim.new(0, 10)})
@@ -315,21 +315,21 @@ function Library:CreateWindow(options)
     local function AddInfoIcon(parent, pos, data)
         if not data then return end
         local Btn = Create("TextButton", {Parent = parent, Text = "?", Font = Enum.Font.GothamBold, TextSize = 10, TextColor3 = SubTextColor, BackgroundColor3 = Color3.fromRGB(35, 35, 40), Size = UDim2.new(0, 16, 0, 16), Position = pos, AutoButtonColor = false, ZIndex = 5})
-        Create("UICorner", {Parent = Btn, CornerRadius = UDim.new(0, 0)})
+        Create("UICorner", {Parent = Btn, CornerRadius = UDim.new(0, 10)})
         AddBounce(Btn)
         Btn.MouseEnter:Connect(function() Tween(Btn, {TextColor3 = TextColor, BackgroundColor3 = AccentColor}, 0.2) end)
         Btn.MouseLeave:Connect(function() Tween(Btn, {TextColor3 = SubTextColor, BackgroundColor3 = Color3.fromRGB(35, 35, 40)}, 0.2) end)
         Btn.MouseButton1Click:Connect(function() OpenInfoWindow(data) end)
     end
 
-    local MainFrame = Create("Frame", {Parent = ScreenGui, BackgroundColor3 = BackgroundColor, Size = UDim2.new(0, 1220, 0, 760), Position = UDim2.new(0.5, 0, 0.5, 0), AnchorPoint = Vector2.new(0.5, 0.5), ClipsDescendants = true, BackgroundTransparency = 1, Active = true})
-    local MainScale = Create("UIScale", {Parent = MainFrame, Scale = 0.8})
+    local MainFrame = Create("Frame", {Parent = ScreenGui, BackgroundColor3 = BackgroundColor, Size = UDim2.new(0, 1250, 0, 820), Position = UDim2.new(0.5, 0, 0.5, 0), AnchorPoint = Vector2.new(0.5, 0.5), ClipsDescendants = true, BackgroundTransparency = 1, Active = true})
+    local MainScale = Create("UIScale", {Parent = MainFrame, Scale = 0.72})
     Create("UICorner", {Parent = MainFrame, CornerRadius = UDim.new(0, 14)})
     Create("UIStroke", {Parent = MainFrame, Color = Color3.fromRGB(0, 105, 180), Thickness = 1.5})
     Tween(MainScale, {Scale = 1}, 0.5)
     Tween(MainFrame, {BackgroundTransparency = 0}, 0.5)
 
-    local TopBar = Create("Frame", {Parent = MainFrame, BackgroundColor3 = BackgroundColor, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 40), Position = UDim2.new(0, 0, 0, 0), Active = true})
+    local TopBar = Create("Frame", {Parent = MainFrame, BackgroundColor3 = BackgroundColor, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 58), Position = UDim2.new(0, 0, 0, 0), Active = true})
     MakeDraggable(TopBar, MainFrame)
     
     local titleOffsetX = 15
@@ -349,7 +349,7 @@ function Library:CreateWindow(options)
     local Title = Create("TextLabel", {Parent = TitleContainer, Text = hubName, Font = Enum.Font.GothamBold, TextSize = 14, TextColor3 = TextColor, BackgroundTransparency = 1, Position = UDim2.new(0, 0, 0, 5), Size = UDim2.new(1, 0, 0, 16), TextXAlignment = Enum.TextXAlignment.Left})
     local Subtitle = Create("TextLabel", {Parent = TitleContainer, Text = subText, Font = Enum.Font.Gotham, TextSize = 10, TextColor3 = subColor, BackgroundTransparency = 1, Position = UDim2.new(0, 0, 0, 22), Size = UDim2.new(1, 0, 0, 12), TextXAlignment = Enum.TextXAlignment.Left})
 
-    local SearchBar = Create("Frame", {Parent = MainFrame, BackgroundColor3 = CardColor, Size = UDim2.new(0, 525, 0, 58), Position = UDim2.new(0.5, 0, 1, -38), AnchorPoint = Vector2.new(0.5, 1), ZIndex = 20})
+    local SearchBar = Create("Frame", {Parent = MainFrame, BackgroundColor3 = CardColor, Size = UDim2.new(0, 525, 0, 60), Position = UDim2.new(0.5, 0, 1, -28), AnchorPoint = Vector2.new(0.5, 1), ZIndex = 20})
     Create("UICorner", {Parent = SearchBar, CornerRadius = UDim.new(0, 12)})
     local SearchIcon = Create("ImageLabel", {Parent = SearchBar, BackgroundTransparency = 1, Image = "rbxassetid://6031154871", ImageColor3 = SubTextColor, Size = UDim2.new(0, 22, 0, 22), Position = UDim2.new(0, 22, 0.5, -11)})
     local SearchInput = Create("TextBox", {Parent = SearchBar, BackgroundTransparency = 1, Size = UDim2.new(1, -65, 1, 0), Position = UDim2.new(0, 62, 0, 0), Font = Enum.Font.Gotham, TextSize = 12, TextColor3 = TextColor, PlaceholderText = "Search..", TextXAlignment = Enum.TextXAlignment.Left, ClearTextOnFocus = false})
@@ -357,14 +357,14 @@ function Library:CreateWindow(options)
     local CloseBtn = Create("TextButton", {Parent = TopBar, Text = "X", Font = Enum.Font.GothamBold, TextSize = 14, TextColor3 = SubTextColor, BackgroundTransparency = 1, Size = UDim2.new(0, 30, 1, 0), Position = UDim2.new(1, -35, 0, 0)})
     local MinBtn = Create("TextButton", {Parent = TopBar, Text = "—", Font = Enum.Font.GothamBold, TextSize = 14, TextColor3 = SubTextColor, BackgroundTransparency = 1, Size = UDim2.new(0, 30, 1, 0), Position = UDim2.new(1, -65, 0, 0)})
 
-    local Sidebar = Create("Frame", {Parent = MainFrame, BackgroundTransparency = 1, Size = UDim2.new(1, -80, 0, 92), Position = UDim2.new(0, 40, 0, 82), Active = true})
+    local Sidebar = Create("Frame", {Parent = MainFrame, BackgroundTransparency = 1, Size = UDim2.new(1, -80, 0, 96), Position = UDim2.new(0, 40, 0, 78), Active = true})
     local TabContainer = Create("Frame", {Parent = Sidebar, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 1, 0)})
-    local TabLayout = Create("UIListLayout", {Parent = TabContainer, FillDirection = Enum.FillDirection.Horizontal, HorizontalAlignment = Enum.HorizontalAlignment.Center, VerticalAlignment = Enum.VerticalAlignment.Center, Padding = UDim.new(0, 14)})
-    local Divider = Create("Frame", {Parent = MainFrame, BackgroundColor3 = Color3.fromRGB(0, 70, 120), BackgroundTransparency = 0.7, BorderSizePixel = 0, Size = UDim2.new(1, -80, 0, 1), Position = UDim2.new(0, 40, 0, 184)})
-    local ContentArea = Create("Frame", {Parent = MainFrame, BackgroundTransparency = 1, Size = UDim2.new(1, -80, 1, -235), Position = UDim2.new(0, 40, 0, 195), Active = true})
+    local TabLayout = Create("UIListLayout", {Parent = TabContainer, FillDirection = Enum.FillDirection.Horizontal, HorizontalAlignment = Enum.HorizontalAlignment.Center, VerticalAlignment = Enum.VerticalAlignment.Center, Padding = UDim.new(0, 18)})
+    local Divider = Create("Frame", {Parent = MainFrame, BackgroundColor3 = Color3.fromRGB(0, 70, 120), BackgroundTransparency = 0.7, BorderSizePixel = 0, Size = UDim2.new(1, -80, 0, 1), Position = UDim2.new(0, 40, 0, 188)})
+    local ContentArea = Create("Frame", {Parent = MainFrame, BackgroundTransparency = 1, Size = UDim2.new(1, -80, 1, -300), Position = UDim2.new(0, 40, 0, 205), Active = true})
 
     local Sphere = Create("ImageButton", {Parent = ScreenGui, BackgroundColor3 = BackgroundColor, BackgroundTransparency = 0.2, Size = UDim2.new(0, 50, 0, 50), Position = UDim2.new(0.5, 0, 0.5, 0), AnchorPoint = Vector2.new(0.5, 0.5), Visible = false, AutoButtonColor = false, ImageTransparency = 1, ClipsDescendants = true})
-    Create("UICorner", {Parent = Sphere, CornerRadius = UDim.new(0, 0)})
+    Create("UICorner", {Parent = Sphere, CornerRadius = UDim.new(0, 10)})
     Create("UIStroke", {Parent = Sphere, Color = AccentColor, Thickness = 2})
     
     -- MODIFIED SECTION: Text Label prioritized if SphereText toggle is true. Avoids passing boolean as Text.
@@ -413,16 +413,16 @@ function Library:CreateWindow(options)
 
     local Popup = Create("Frame", {Parent = ScreenGui, BackgroundColor3 = Color3.fromRGB(0, 0, 0), BackgroundTransparency = 1, Size = UDim2.new(1, 0, 1, 0), ZIndex = 100, Visible = false, Active = true})
     local PopupCard = Create("Frame", {Parent = Popup, BackgroundColor3 = Color3.fromRGB(20, 20, 24), Size = UDim2.new(0, 320, 0, 160), Position = UDim2.new(0.5, 0, 0.5, 0), AnchorPoint = Vector2.new(0.5, 0.5), ZIndex = 101, BackgroundTransparency = 1, ClipsDescendants = false})
-    Create("UICorner", {Parent = PopupCard, CornerRadius = UDim.new(0, 0)})
+    Create("UICorner", {Parent = PopupCard, CornerRadius = UDim.new(0, 10)})
     local PopupScale = Create("UIScale", {Parent = PopupCard, Scale = 0.8})
     local PopupStroke = Create("UIStroke", {Parent = PopupCard, Color = Color3.fromRGB(50, 50, 55), Thickness = 1, Transparency = 1})
     local PopupTitle = Create("TextLabel", {Parent = PopupCard, Text = "Exit Application", Font = Enum.Font.GothamBold, TextSize = 18, TextColor3 = TextColor, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 30), Position = UDim2.new(0, 0, 0, 25), ZIndex = 102, TextTransparency = 1, TextXAlignment = Enum.TextXAlignment.Center})
     local PopupText = Create("TextLabel", {Parent = PopupCard, Text = "Are you sure you want to close ZyronX? Unsaved configurations might be lost.", Font = Enum.Font.Gotham, TextSize = 13, TextColor3 = SubTextColor, BackgroundTransparency = 1, Size = UDim2.new(1, -40, 0, 40), Position = UDim2.new(0, 20, 0, 55), ZIndex = 102, TextTransparency = 1, TextXAlignment = Enum.TextXAlignment.Center, TextWrapped = true})
     local YesBtn = Create("TextButton", {Parent = PopupCard, Text = "Confirm", Font = Enum.Font.GothamBold, TextSize = 13, TextColor3 = Color3.fromRGB(255, 255, 255), BackgroundColor3 = AccentColor, Size = UDim2.new(0, 125, 0, 36), Position = UDim2.new(0.5, 10, 0, 105), ZIndex = 102, BackgroundTransparency = 1, TextTransparency = 1, AutoButtonColor = false})
-    Create("UICorner", {Parent = YesBtn, CornerRadius = UDim.new(0, 0)})
+    Create("UICorner", {Parent = YesBtn, CornerRadius = UDim.new(0, 10)})
     AddBounce(YesBtn)
     local NoBtn = Create("TextButton", {Parent = PopupCard, Text = "Cancel", Font = Enum.Font.GothamBold, TextSize = 13, TextColor3 = TextColor, BackgroundColor3 = Color3.fromRGB(40, 40, 45), Size = UDim2.new(0, 125, 0, 36), Position = UDim2.new(0.5, -135, 0, 105), ZIndex = 102, BackgroundTransparency = 1, TextTransparency = 1, AutoButtonColor = false})
-    Create("UICorner", {Parent = NoBtn, CornerRadius = UDim.new(0, 0)})
+    Create("UICorner", {Parent = NoBtn, CornerRadius = UDim.new(0, 10)})
     AddBounce(NoBtn)
 
     CloseBtn.MouseButton1Click:Connect(function()
@@ -469,17 +469,6 @@ function Library:CreateWindow(options)
         Tween(NoBtn, {BackgroundTransparency = 1, TextTransparency = 1}, 0.3)
         task.wait(0.3)
         Popup.Visible = false
-    end)
-
-    TabSearchBox:GetPropertyChangedSignal("Text"):Connect(function()
-        local query = TabSearchBox.Text:lower()
-        for _, tabInfo in ipairs(Window.Tabs) do
-            if query == "" or string.find(tabInfo.Txt.Text:lower(), query) then
-                tabInfo.Button.Visible = true
-            else
-                tabInfo.Button.Visible = false
-            end
-        end
     end)
 
     SearchInput:GetPropertyChangedSignal("Text"):Connect(function()
@@ -529,19 +518,30 @@ function Library:CreateWindow(options)
             end
         end
 
-        local TabBtn = Create("TextButton", {Parent = TabContainer, Text = "", BackgroundColor3 = HoverColor, BackgroundTransparency = 1, Size = UDim2.new(0, 180, 0, 76), AutoButtonColor = false})
+        local TabBtn = Create("TextButton", {Parent = TabContainer, Text = "", BackgroundColor3 = HoverColor, BackgroundTransparency = 1, Size = UDim2.new(0, 205, 0, 86), AutoButtonColor = false})
         Create("UICorner", {Parent = TabBtn, CornerRadius = UDim.new(0, 10)})
         AddBounce(TabBtn, 0.98)
-        local Indicator = Create("Frame", {Name = "Indicator", Parent = TabBtn, BackgroundColor3 = isLocked and Color3.fromRGB(255, 215, 0) or AccentColor, Size = UDim2.new(1, 0, 0, 3), Position = UDim2.new(0, 0, 1, -3), AnchorPoint = Vector2.new(0, 0.5)})
-        Create("UICorner", {Parent = Indicator, CornerRadius = UDim.new(0, 0)})
+        local Indicator = Create("Frame", {Name = "Indicator", Parent = TabBtn, BackgroundColor3 = AccentColor, Size = UDim2.new(1, 0, 0, 3), Position = UDim2.new(0, 0, 1, -3), BorderSizePixel = 0})
+        Create("UICorner", {Parent = Indicator, CornerRadius = UDim.new(0, 10)})
         local Txt = Create("TextLabel", {Parent = TabBtn, Text = tabName, Font = Enum.Font.GothamBold, TextSize = 13, TextColor3 = SubTextColor, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 1, 0), Position = UDim2.new(0, 0, 0, 0), TextXAlignment = Enum.TextXAlignment.Center})
 
+        local TabIcon = Create("ImageLabel", {
+            Parent = TabBtn,
+            BackgroundTransparency = 1,
+            Image = isLocked and "rbxassetid://6031082533" or "rbxassetid://6031075938",
+            ImageColor3 = isLocked and Color3.fromRGB(255, 215, 0) or SubTextColor,
+            Size = UDim2.new(0, 24, 0, 24),
+            Position = UDim2.new(0.5, -12, 0, 10),
+            ScaleType = Enum.ScaleType.Fit
+        })
         if isLocked then
-            Create("ImageLabel", {Parent = TabBtn, Image = "rbxassetid://6031082533", ImageColor3 = Color3.fromRGB(255, 215, 0), BackgroundTransparency = 1, Size = UDim2.new(0, 14, 0, 14), Position = UDim2.new(1, -22, 0.5, -7)})
+            Create("ImageLabel", {Parent = TabBtn, Image = "rbxassetid://6031082533", ImageColor3 = Color3.fromRGB(255, 215, 0), BackgroundTransparency = 1, Size = UDim2.new(0, 12, 0, 12), Position = UDim2.new(1, -18, 0, 10)})
         end
+        Txt.Position = UDim2.new(0, 0, 0, 38)
+        Txt.Size = UDim2.new(1, 0, 0, 30)
 
         local TabContent = Create("Frame", {Parent = ContentArea, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 1, 0), Visible = false})
-        local PageNav = Create("Frame", {Parent = TabContent, BackgroundColor3 = CardColor, BackgroundTransparency = 0.15, Size = UDim2.new(0, 300, 1, -10), Position = UDim2.new(0, 0, 0, 0)})
+        local PageNav = Create("Frame", {Parent = TabContent, BackgroundColor3 = CardColor, BackgroundTransparency = 0.15, Size = UDim2.new(0, 300, 1, -18), Position = UDim2.new(0, 0, 0, 0)})
         Create("UICorner", {Parent = PageNav, CornerRadius = UDim.new(0, 12)})
         Create("UIStroke", {Parent = PageNav, Color = Color3.fromRGB(0, 105, 180), Thickness = 1})
         local PageNavList = Create("UIListLayout", {Parent = PageNav, FillDirection = Enum.FillDirection.Vertical, HorizontalAlignment = Enum.HorizontalAlignment.Left, Padding = UDim.new(0, 8), VerticalAlignment = Enum.VerticalAlignment.Top})
@@ -560,7 +560,7 @@ function Library:CreateWindow(options)
             
             if Window.CurrentTab then
                 Tween(Window.CurrentTab.Button, {BackgroundTransparency = 1}, 0.2)
-                Tween(Window.CurrentTab.Indicator, {Size = UDim2.new(0, 3, 0, 0)}, 0.2)
+                Tween(Window.CurrentTab.Indicator, {Size = UDim2.new(1, 0, 0, 0)}, 0.2)
                 Tween(Window.CurrentTab.Txt, {TextColor3 = SubTextColor}, 0.2)
                 Window.CurrentTab.Content.Visible = false
             end
@@ -572,7 +572,7 @@ function Library:CreateWindow(options)
             Tween(TabConfig.Content, {Position = UDim2.new(0, 0, 0, 0)}, 0.35)
 
             Tween(TabBtn, {BackgroundTransparency = 0}, 0.2)
-            Tween(Indicator, {Size = UDim2.new(0, 3, 0, 18)}, 0.3)
+            Tween(Indicator, {Size = UDim2.new(1, 0, 0, 3)}, 0.3)
             Tween(Txt, {TextColor3 = TextColor}, 0.2)
 
             if #TabConfig.Pages > 0 then
@@ -580,7 +580,7 @@ function Library:CreateWindow(options)
                 if TabConfig.CurrentPage ~= firstPage then
                     if TabConfig.CurrentPage then
                         Tween(TabConfig.CurrentPage.Btn, {TextColor3 = SubTextColor}, 0)
-                        Tween(TabConfig.CurrentPage.Highlight, {Size = UDim2.new(0, 0, 0, 2), BackgroundTransparency = 1}, 0)
+                        Tween(TabConfig.CurrentPage.Highlight, {Size = UDim2.new(0, 4, 1, 0), BackgroundTransparency = 1}, 0)
                         TabConfig.CurrentPage.Scroll.Visible = false
                     end
                     TabConfig.CurrentPage = firstPage
@@ -590,14 +590,25 @@ function Library:CreateWindow(options)
                     Tween(firstPage.Scroll, {Position = UDim2.new(0, 5, 0, 5)}, 0.35)
 
                     Tween(firstPage.Btn, {TextColor3 = TextColor}, 0)
-                    Tween(firstPage.Highlight, {Size = UDim2.new(1, 0, 0, 2), BackgroundTransparency = 0}, 0)
+                    Tween(firstPage.Highlight, {Size = UDim2.new(0, 4, 1, 0), BackgroundTransparency = 0}, 0)
                 end
             end
         end)
 
         function TabConfig:CreatePage(pageName)
-            local PageBtn = Create("TextButton", {Parent = PageNav, Text = pageName, Font = Enum.Font.GothamBold, TextSize = 13, TextColor3 = SubTextColor, BackgroundTransparency = 1, Size = UDim2.new(1, -20, 0, 58), Position = UDim2.new(0, 10, 0, 10)})
-            local PageHighlight = Create("Frame", {Parent = PageBtn, BackgroundColor3 = AccentColor, Size = UDim2.new(0, 0, 0, 2), Position = UDim2.new(0, 0, 1, -3), AnchorPoint = Vector2.new(0, 0), BackgroundTransparency = 1})
+            local PageBtn = Create("TextButton", {Parent = PageNav, Text = pageName, Font = Enum.Font.GothamBold, TextSize = 13, TextColor3 = SubTextColor, BackgroundTransparency = 1, Size = UDim2.new(1, -24, 0, 64), Position = UDim2.new(0, 12, 0, 12)})
+            local PageHighlight = Create("Frame", {Parent = PageBtn, BackgroundColor3 = AccentColor, Size = UDim2.new(0, 4, 1, 0), Position = UDim2.new(0, -12, 0, 0), BackgroundTransparency = 1, BorderSizePixel = 0})
+            local PageIcon = Create("ImageLabel", {
+                Parent = PageBtn,
+                BackgroundTransparency = 1,
+                Image = "rbxassetid://6031075938",
+                ImageColor3 = SubTextColor,
+                Size = UDim2.new(0, 24, 0, 24),
+                Position = UDim2.new(0, 14, 0.5, -12),
+                ScaleType = Enum.ScaleType.Fit
+            })
+            PageBtn.TextXAlignment = Enum.TextXAlignment.Left
+            PageBtn.Text = "        " .. pageName
             local PageScroll = Create("ScrollingFrame", {Parent = PageContainer, BackgroundTransparency = 1, Size = UDim2.new(1, -10, 1, -10), Position = UDim2.new(0, 5, 0, 5), ScrollBarThickness = 2, ScrollBarImageColor3 = Color3.fromRGB(60, 60, 65), Visible = false, BorderSizePixel = 0})
 
             local LeftColumn = Create("Frame", {Parent = PageScroll, BackgroundTransparency = 1, Size = UDim2.new(0.5, -5, 1, 0)})
@@ -616,7 +627,7 @@ function Library:CreateWindow(options)
                 if TabConfig.CurrentPage == PageObj then return end
                 if TabConfig.CurrentPage then
                     Tween(TabConfig.CurrentPage.Btn, {TextColor3 = SubTextColor}, 0.2)
-                    Tween(TabConfig.CurrentPage.Highlight, {Size = UDim2.new(0, 0, 0, 2), BackgroundTransparency = 1}, 0.2)
+                    Tween(TabConfig.CurrentPage.Highlight, {Size = UDim2.new(0, 4, 1, 0), BackgroundTransparency = 1}, 0.2)
                     TabConfig.CurrentPage.Scroll.Visible = false
                 end
                 TabConfig.CurrentPage = PageObj
@@ -626,14 +637,14 @@ function Library:CreateWindow(options)
                 Tween(PageObj.Scroll, {Position = UDim2.new(0, 5, 0, 5)}, 0.35)
 
                 Tween(PageBtn, {TextColor3 = TextColor}, 0.2)
-                Tween(PageHighlight, {Size = UDim2.new(1, 0, 0, 2), BackgroundTransparency = 0}, 0.3)
+                Tween(PageHighlight, {Size = UDim2.new(0, 4, 1, 0), BackgroundTransparency = 0}, 0.3)
             end)
 
             if #TabConfig.Pages == 1 and not isLocked then
                 TabConfig.CurrentPage = PageObj
                 PageObj.Scroll.Visible = true
                 PageBtn.TextColor3 = TextColor
-                PageHighlight.Size = UDim2.new(1, 0, 0, 2)
+                PageHighlight.Size = UDim2.new(0, 4, 1, 0)
                 PageHighlight.BackgroundTransparency = 0
             end
 
@@ -642,7 +653,7 @@ function Library:CreateWindow(options)
                 PageObj.Left = not PageObj.Left
 
                 local SectionContainer = Create("Frame", {Parent = targetColumn, BackgroundColor3 = CardColor, Size = UDim2.new(1, 0, 0, 30), AutomaticSize = Enum.AutomaticSize.Y, ClipsDescendants = true})
-                Create("UICorner", {Parent = SectionContainer, CornerRadius = UDim.new(0, 0)})
+                Create("UICorner", {Parent = SectionContainer, CornerRadius = UDim.new(0, 12)})
                 
                 table.insert(Window.AllCards, {
                     Card = SectionContainer,
@@ -1248,7 +1259,7 @@ function Library:CreateWindow(options)
 
         if isDefault then
             TabBtn.BackgroundTransparency = 0
-            Indicator.Size = UDim2.new(0, 3, 0, 18)
+            Indicator.Size = UDim2.new(1, 0, 0, 3)
             Txt.TextColor3 = TextColor
             TabContent.Visible = true
             Window.CurrentTab = TabConfig
@@ -1259,3 +1270,4 @@ function Library:CreateWindow(options)
 end
 
 return Library
+
