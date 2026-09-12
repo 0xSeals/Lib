@@ -619,35 +619,23 @@ function Library:CreateWindow(options)
 	)
 	local MainScale = Create("UIScale", { Parent = MainFrame, Scale = 0.8 })
 	Create("UICorner", { Parent = MainFrame, CornerRadius = UDim.new(0, 14) })
-	Create("UIStroke", { Parent = MainFrame, Color = AccentSoft, Thickness = 1, Transparency = 1, ApplyStrokeMode = Enum.ApplyStrokeMode.Border })
-
+	
 	-- Soft outer glow. Kept outside MainFrame so ClipsDescendants cannot cut it off.
 	local MainGlowOuter = Create("Frame", {
 		Name = "MoonGlow",
 		Parent = ScreenGui,
 		BackgroundTransparency = 1,
-		Size = UDim2.new(0, 792, 0, 512),
+		Size = UDim2.new(0, 804, 0, 524),
 		Position = UDim2.new(0.5, 0, 0.5, 0),
 		AnchorPoint = Vector2.new(0.5, 0.5),
 		ZIndex = 0,
 		Active = false,
 	})
-	Create("UICorner", { Parent = MainGlowOuter, CornerRadius = UDim.new(0, 17) })
-	Create("UIStroke", { Parent = MainGlowOuter, Color = AccentColor, Thickness = 2, Transparency = 0.88 })
-	local MainGlowInner = Create("Frame", {
-		Parent = MainGlowOuter,
-		BackgroundTransparency = 1,
-		Size = UDim2.new(1, -6, 1, -6),
-		Position = UDim2.new(0.5, 0, 0.5, 0),
-		AnchorPoint = Vector2.new(0.5, 0.5),
-		ZIndex = 0,
-	})
-	Create("UICorner", { Parent = MainGlowInner, CornerRadius = UDim.new(0, 15) })
-	Create("UIStroke", { Parent = MainGlowInner, Color = AccentColor, Thickness = 2, Transparency = 0.93 })
+	Create("UICorner", { Parent = MainGlowOuter, CornerRadius = UDim.new(0, 21) })
+	Create("UIStroke", { Parent = MainGlowOuter, Color = AccentColor, Thickness = 5, Transparency = 0.965 })
 	Tween(MainScale, { Scale = 1 }, 0.5)
 	Tween(MainFrame, { BackgroundTransparency = 0 }, 0.5)
-	Tween(MainGlowOuter:FindFirstChild("UIStroke"), { Transparency = 0.86 }, 0.5)
-	Tween(MainGlowInner:FindFirstChild("UIStroke"), { Transparency = 0.91 }, 0.5)
+	Tween(MainGlowOuter:FindFirstChild("UIStroke"), { Transparency = 0.94 }, 0.5)
 
 	local TopBar = Create(
 		"Frame",
@@ -662,7 +650,7 @@ function Library:CreateWindow(options)
 	)
 	MakeDraggable(TopBar, MainFrame)
 	MainGlowOuter.Position = MainFrame.Position
-	MainGlowOuter.Size = UDim2.new(0, 792, 0, 512)
+	MainGlowOuter.Size = UDim2.new(0, 804, 0, 524)
 	local GlowSync
 	GlowSync = RunService.RenderStepped:Connect(function()
 		if not ScreenGui.Parent then
@@ -1058,8 +1046,7 @@ function Library:CreateWindow(options)
 		Tween(MainScale, { Scale = 0.8 }, 0.3)
 		Tween(MainFrame, { BackgroundTransparency = 1 }, 0.3)
 		Tween(MainGlowOuter:FindFirstChild("UIStroke"), { Transparency = 1 }, 0.3)
-		Tween(MainGlowInner:FindFirstChild("UIStroke"), { Transparency = 1 }, 0.3)
-
+		
 		for _, desc in ipairs(MainFrame:GetDescendants()) do
 			if desc:IsA("TextLabel") or desc:IsA("TextButton") or desc:IsA("TextBox") then
 				Tween(desc, { TextTransparency = 1 }, 0.3)
@@ -1272,8 +1259,8 @@ function Library:CreateWindow(options)
 					TabConfig.CurrentPage = firstPage
 					firstPage.Scroll.Visible = true
 
-					firstPage.Scroll.Position = UDim2.new(0, 5, 0, 15)
-					Tween(firstPage.Scroll, { Position = UDim2.new(0, 5, 0, 5) }, 0.35)
+					firstPage.Scroll.Position = UDim2.new(0, 10, 0, 18)
+					Tween(firstPage.Scroll, { Position = UDim2.new(0, 10, 0, 8) }, 0.35)
 
 					Tween(firstPage.Btn, { TextColor3 = TextColor }, 0)
 					Tween(firstPage.Highlight, { Size = UDim2.new(1, 0, 0, 2), BackgroundTransparency = 0 }, 0)
@@ -1311,8 +1298,8 @@ function Library:CreateWindow(options)
 				{
 					Parent = PageContainer,
 					BackgroundTransparency = 1,
-					Size = UDim2.new(1, -10, 1, -10),
-					Position = UDim2.new(0, 5, 0, 5),
+					Size = UDim2.new(1, -20, 1, -18),
+					Position = UDim2.new(0, 10, 0, 8),
 					ScrollBarThickness = 2,
 					ScrollBarImageColor3 = Color3.fromRGB(88, 58, 116),
 					Visible = false,
@@ -1321,14 +1308,14 @@ function Library:CreateWindow(options)
 			)
 
 			local LeftColumn =
-				Create("Frame", { Parent = PageScroll, BackgroundTransparency = 1, Size = UDim2.new(0.5, -5, 1, 0) })
+				Create("Frame", { Parent = PageScroll, BackgroundTransparency = 1, Size = UDim2.new(0.5, -7, 1, -4), Position = UDim2.new(0, 2, 0, 2) })
 			local RightColumn = Create(
 				"Frame",
 				{
 					Parent = PageScroll,
 					BackgroundTransparency = 1,
-					Size = UDim2.new(0.5, -5, 1, 0),
-					Position = UDim2.new(0.5, 5, 0, 0),
+					Size = UDim2.new(0.5, -7, 1, -4),
+					Position = UDim2.new(0.5, 5, 0, 2),
 				}
 			)
 
@@ -1376,8 +1363,8 @@ function Library:CreateWindow(options)
 				TabConfig.CurrentPage = PageObj
 				PageObj.Scroll.Visible = true
 
-				PageObj.Scroll.Position = UDim2.new(0, 5, 0, 20)
-				Tween(PageObj.Scroll, { Position = UDim2.new(0, 5, 0, 5) }, 0.35)
+				PageObj.Scroll.Position = UDim2.new(0, 10, 0, 23)
+				Tween(PageObj.Scroll, { Position = UDim2.new(0, 10, 0, 8) }, 0.35)
 
 				Tween(PageBtn, { TextColor3 = TextColor }, 0.2)
 				Tween(PageHighlight, { Size = UDim2.new(1, 0, 0, 2), BackgroundTransparency = 0 }, 0.3)
@@ -1405,12 +1392,22 @@ function Library:CreateWindow(options)
 						ClipsDescendants = false,
 					}
 				)
-				Create("UICorner", { Parent = SectionContainer, CornerRadius = UDim.new(0, 12) })
-				Create("UIStroke", { Parent = SectionContainer, Color = BorderColor, Thickness = 1, Transparency = 0.08, ApplyStrokeMode = Enum.ApplyStrokeMode.Border })
-				Create("UIGradient", { Parent = SectionContainer, Rotation = 90, Color = ColorSequence.new({ ColorSequenceKeypoint.new(0, Color3.fromRGB(22, 17, 38)), ColorSequenceKeypoint.new(1, CardColor) }), Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0), NumberSequenceKeypoint.new(1, 0.12) }) })
-				local SectionGlow = Create("Frame", { Parent = SectionContainer, BackgroundTransparency = 1, Size = UDim2.new(1, -4, 1, -4), Position = UDim2.new(0.5, 0, 0.5, 0), AnchorPoint = Vector2.new(0.5, 0.5), ZIndex = 0 })
-				Create("UICorner", { Parent = SectionGlow, CornerRadius = UDim.new(0, 13) })
-				Create("UIStroke", { Parent = SectionGlow, Color = AccentColor, Thickness = 1, Transparency = 0.92 })
+				Create("UICorner", { Parent = SectionContainer, CornerRadius = UDim.new(0, 13) })
+				local SectionStroke = Create("UIStroke", {
+					Parent = SectionContainer,
+					Color = Color3.fromRGB(86, 55, 122),
+					Thickness = 1,
+					Transparency = 0.18,
+					ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+				})
+				Create("UIGradient", {
+					Parent = SectionContainer,
+					Rotation = 90,
+					Color = ColorSequence.new({
+						ColorSequenceKeypoint.new(0, Color3.fromRGB(20, 16, 34)),
+						ColorSequenceKeypoint.new(1, Color3.fromRGB(15, 12, 27)),
+					}),
+				})
 
 				table.insert(Window.AllCards, {
 					Card = SectionContainer,
