@@ -167,7 +167,7 @@ end
 local AccentColor = Color3.fromRGB(105, 157, 235)
 local AccentSoft = Color3.fromRGB(67, 94, 135)
 local BorderColor = Color3.fromRGB(48, 61, 82)
-local BackgroundColor = Color3.fromRGB(10, 12, 17)
+local BackgroundColor = Color3.fromRGB(18, 22, 30)
 local CardColor = Color3.fromRGB(18, 22, 30)
 local InputColor = Color3.fromRGB(12, 15, 21)
 local HoverColor = Color3.fromRGB(29, 37, 49)
@@ -672,7 +672,7 @@ function Library:CreateWindow(options)
 			Parent = TitleContainer,
 			Text = hubName,
 			Font = Enum.Font.GothamBold,
-			TextSize = 16,
+			TextSize = 18,
 			TextColor3 = TextColor,
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, 0, 0, 5),
