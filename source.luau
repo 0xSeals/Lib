@@ -911,13 +911,32 @@ function Library:CreateWindow(options)
 		SetWindowVisible(false, true)
 	end)
 
-	-- Reliable keyboard toggle. ContextActionService receives the key even when Roblox marks input as processed.
+	-- Keyboard toggle with debounce.
+	-- Both ContextActionService and UserInputService can receive the same key in some
+	-- executors, which previously caused one press to toggle the UI twice.
+	local ToggleDebounce = false
+	local ToggleDelay = 0.45
+
+	local function ToggleWindow()
+		if ToggleDebounce then
+			return
+		end
+
+		ToggleDebounce = true
+		SetWindowVisible(not MainFrame.Visible, true)
+
+		task.delay(ToggleDelay, function()
+			ToggleDebounce = false
+		end)
+	end
+
+	-- High-priority listener catches the key even when Roblox marks it as processed.
 	local ToggleActionName = "MoonLib_Toggle_" .. tostring(math.random(100000, 999999))
 	ContextActionService:BindActionAtPriority(
 		ToggleActionName,
 		function(_, inputState, inputObject)
 			if inputState == Enum.UserInputState.Begin and inputObject.KeyCode == ToggleKey then
-				SetWindowVisible(not MainFrame.Visible, true)
+				ToggleWindow()
 				return Enum.ContextActionResult.Sink
 			end
 			return Enum.ContextActionResult.Pass
@@ -927,10 +946,11 @@ function Library:CreateWindow(options)
 		ToggleKey
 	)
 
-	-- Fallback keyboard listener for executors that do not forward ContextActionService input reliably.
+	-- Fallback listener. The same debounce prevents a single key press from
+	-- opening and immediately closing the window when both listeners fire.
 	UserInputService.InputBegan:Connect(function(input)
 		if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == ToggleKey then
-			SetWindowVisible(not MainFrame.Visible, true)
+			ToggleWindow()
 		end
 	end)
 
@@ -2893,6 +2913,14 @@ function Library:CreateWindow(options)
 		end
 		return TabConfig
 	end
+
+	-- Final text cleanup: guarantee that no text object in the library has an outline.
+	for _, root in ipairs(ScreenGui:GetDescendants()) do
+		if root:IsA("TextLabel") or root:IsA("TextButton") or root:IsA("TextBox") then
+			root.TextStrokeTransparency = 1
+		end
+	end
+
 	return Window
 end
 
