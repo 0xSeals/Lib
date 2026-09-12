@@ -161,15 +161,15 @@ local function MakeDraggable(topbar, object)
 	end)
 end
 
-local AccentColor = Color3.fromRGB(183, 101, 255)
-local AccentSoft = Color3.fromRGB(126, 76, 184)
-local BorderColor = Color3.fromRGB(91, 63, 132)
-local BackgroundColor = Color3.fromRGB(9, 8, 16)
-local CardColor = Color3.fromRGB(18, 14, 32)
-local InputColor = Color3.fromRGB(11, 9, 20)
-local HoverColor = Color3.fromRGB(32, 23, 49)
+local AccentColor = Color3.fromRGB(186, 112, 255)
+local AccentSoft = Color3.fromRGB(117, 77, 166)
+local BorderColor = Color3.fromRGB(82, 58, 112)
+local BackgroundColor = Color3.fromRGB(8, 7, 14)
+local CardColor = Color3.fromRGB(17, 13, 29)
+local InputColor = Color3.fromRGB(10, 8, 18)
+local HoverColor = Color3.fromRGB(38, 26, 57)
 local TextColor = Color3.fromRGB(247, 243, 255)
-local SubTextColor = Color3.fromRGB(170, 160, 193)
+local SubTextColor = Color3.fromRGB(177, 168, 199)
 
 -- // Global Notification API
 local GlobalNotifContainer
@@ -186,15 +186,16 @@ function Library:Notify(options)
 		"Frame",
 		{
 			Parent = GlobalNotifContainer,
-			BackgroundColor3 = Color3.fromRGB(20, 20, 22),
-			Size = UDim2.new(1, 0, 0, 65),
+			BackgroundColor3 = CardColor,
+			Size = UDim2.new(1, 0, 0, 70),
 			BackgroundTransparency = 1,
 			ZIndex = 201,
 			ClipsDescendants = true,
 		}
 	)
-	Create("UICorner", { Parent = Notif, CornerRadius = UDim.new(0, 10) })
-	local Stroke = Create("UIStroke", { Parent = Notif, Color = AccentColor, Thickness = 1.5, Transparency = 1 })
+	Create("UICorner", { Parent = Notif, CornerRadius = UDim.new(0, 14) })
+	local Stroke = Create("UIStroke", { Parent = Notif, Color = AccentColor, Thickness = 1, Transparency = 1 })
+	local NotifScale = Create("UIScale", { Parent = Notif, Scale = 0.94 })
 
 	local TitleText = Create(
 		"TextLabel",
@@ -229,14 +230,16 @@ function Library:Notify(options)
 		}
 	)
 
-	Tween(Notif, { BackgroundTransparency = 0 }, 0.3)
-	Tween(Stroke, { Transparency = 0 }, 0.3)
-	Tween(TitleText, { TextTransparency = 0 }, 0.3)
-	Tween(DescText, { TextTransparency = 0 }, 0.3)
+	Tween(Notif, { BackgroundTransparency = 0 }, 0.38)
+	Tween(NotifScale, { Scale = 1 }, 0.38)
+	Tween(Stroke, { Transparency = 0.12 }, 0.38)
+	Tween(TitleText, { TextTransparency = 0 }, 0.32)
+	Tween(DescText, { TextTransparency = 0 }, 0.32)
 
 	task.delay(duration, function()
-		Tween(Notif, { BackgroundTransparency = 1 }, 0.4)
-		Tween(Stroke, { Transparency = 1 }, 0.4)
+		Tween(Notif, { BackgroundTransparency = 1 }, 0.35)
+		Tween(NotifScale, { Scale = 0.94 }, 0.35)
+		Tween(Stroke, { Transparency = 1 }, 0.35)
 		Tween(TitleText, { TextTransparency = 1 }, 0.4)
 		Tween(DescText, { TextTransparency = 1 }, 0.4)
 		task.wait(0.4)
@@ -314,24 +317,17 @@ function Library:CreateWindow(options)
 			"Frame",
 			{
 				Parent = NotifContainer,
-				BackgroundColor3 = Color3.fromRGB(20, 20, 22),
-				Size = UDim2.new(1, 0, 0, 65),
+				BackgroundColor3 = CardColor,
+				Size = UDim2.new(1, 0, 0, 70),
 				BackgroundTransparency = 1,
 				ZIndex = 201,
 				ClipsDescendants = true,
 			}
 		)
-		Create("UICorner", { Parent = Notif, CornerRadius = UDim.new(0, 10) })
+		Create("UICorner", { Parent = Notif, CornerRadius = UDim.new(0, 14) })
 
-		local Stroke = Create("UIStroke", { Parent = Notif, Thickness = 1.5, Transparency = 1 })
-		local StrokeGrad = Create(
-			"UIGradient",
-			{
-				Parent = Stroke,
-				Color = ColorSequence.new(Color3.fromRGB(255, 215, 0), Color3.fromRGB(180, 130, 20)),
-				Rotation = 45,
-			}
-		)
+		local Stroke = Create("UIStroke", { Parent = Notif, Color = AccentColor, Thickness = 1, Transparency = 1 })
+		local NotifScale = Create("UIScale", { Parent = Notif, Scale = 0.94 })
 
 		local LockIcon = Create(
 			"ImageLabel",
@@ -341,7 +337,7 @@ function Library:CreateWindow(options)
 				Size = UDim2.new(0, 24, 0, 24),
 				Position = UDim2.new(0, 15, 0.5, -12),
 				Image = "rbxassetid://6031082533",
-				ImageColor3 = Color3.fromRGB(255, 215, 0),
+				ImageColor3 = AccentColor,
 				ImageTransparency = 1,
 				ZIndex = 202,
 			}
@@ -353,7 +349,7 @@ function Library:CreateWindow(options)
 				Text = "ACCESS DENIED",
 				Font = Enum.Font.GothamBlack,
 				TextSize = 12,
-				TextColor3 = SubTextColor,
+				TextColor3 = AccentColor,
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 50, 0, 15),
 				Size = UDim2.new(1, -60, 0, 15),
@@ -366,7 +362,7 @@ function Library:CreateWindow(options)
 			"TextLabel",
 			{
 				Parent = Notif,
-				Text = 'This Is For <font color="#FFD700"><b>Whitelisted Users</b></font>',
+				Text = 'This Is For <font color="#BA70FF"><b>Whitelisted Users</b></font>',
 				RichText = true,
 				Font = Enum.Font.Gotham,
 				TextSize = 14,
@@ -380,38 +376,18 @@ function Library:CreateWindow(options)
 			}
 		)
 
-		local Shine = Create(
-			"Frame",
-			{
-				Parent = Notif,
-				BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-				BackgroundTransparency = 0.8,
-				BorderSizePixel = 0,
-				Size = UDim2.new(0, 20, 2, 0),
-				Position = UDim2.new(-0.2, 0, -0.5, 0),
-				Rotation = 25,
-				ZIndex = 203,
-			}
-		)
 
-		Tween(Notif, { BackgroundTransparency = 0 }, 0.3)
-		Tween(Stroke, { Transparency = 0 }, 0.3)
-		Tween(LockIcon, { ImageTransparency = 0 }, 0.3)
-		Tween(TitleText, { TextTransparency = 0 }, 0.3)
-		Tween(DescText, { TextTransparency = 0 }, 0.3)
-
-		local shineTween = TweenService:Create(
-			Shine,
-			TweenInfo.new(0.75, Enum.EasingStyle.Sine, Enum.EasingDirection.Out),
-			{ Position = UDim2.new(1.2, 0, -0.5, 0) }
-		)
-		task.delay(0.2, function()
-			shineTween:Play()
-		end)
+		Tween(Notif, { BackgroundTransparency = 0 }, 0.38)
+		Tween(NotifScale, { Scale = 1 }, 0.38)
+		Tween(Stroke, { Transparency = 0.12 }, 0.38)
+		Tween(LockIcon, { ImageTransparency = 0 }, 0.32)
+		Tween(TitleText, { TextTransparency = 0 }, 0.32)
+		Tween(DescText, { TextTransparency = 0 }, 0.32)
 
 		task.delay(4, function()
-			Tween(Notif, { BackgroundTransparency = 1 }, 0.4)
-			Tween(Stroke, { Transparency = 1 }, 0.4)
+			Tween(Notif, { BackgroundTransparency = 1 }, 0.35)
+			Tween(NotifScale, { Scale = 0.94 }, 0.35)
+			Tween(Stroke, { Transparency = 1 }, 0.35)
 			Tween(LockIcon, { ImageTransparency = 1 }, 0.4)
 			Tween(TitleText, { TextTransparency = 1 }, 0.4)
 			Tween(DescText, { TextTransparency = 1 }, 0.4)
@@ -643,7 +619,7 @@ function Library:CreateWindow(options)
 	)
 	local MainScale = Create("UIScale", { Parent = MainFrame, Scale = 0.8 })
 	Create("UICorner", { Parent = MainFrame, CornerRadius = UDim.new(0, 14) })
-	Create("UIStroke", { Parent = MainFrame, Color = AccentSoft, Thickness = 1, Transparency = 0.18, ApplyStrokeMode = Enum.ApplyStrokeMode.Border })
+	Create("UIStroke", { Parent = MainFrame, Color = AccentSoft, Thickness = 1, Transparency = 1, ApplyStrokeMode = Enum.ApplyStrokeMode.Border })
 
 	-- Soft outer glow. Kept outside MainFrame so ClipsDescendants cannot cut it off.
 	local MainGlowOuter = Create("Frame", {
@@ -657,7 +633,7 @@ function Library:CreateWindow(options)
 		Active = false,
 	})
 	Create("UICorner", { Parent = MainGlowOuter, CornerRadius = UDim.new(0, 17) })
-	Create("UIStroke", { Parent = MainGlowOuter, Color = AccentColor, Thickness = 3, Transparency = 0.86 })
+	Create("UIStroke", { Parent = MainGlowOuter, Color = AccentColor, Thickness = 2, Transparency = 0.88 })
 	local MainGlowInner = Create("Frame", {
 		Parent = MainGlowOuter,
 		BackgroundTransparency = 1,
@@ -667,7 +643,7 @@ function Library:CreateWindow(options)
 		ZIndex = 0,
 	})
 	Create("UICorner", { Parent = MainGlowInner, CornerRadius = UDim.new(0, 15) })
-	Create("UIStroke", { Parent = MainGlowInner, Color = AccentColor, Thickness = 2, Transparency = 0.91 })
+	Create("UIStroke", { Parent = MainGlowInner, Color = AccentColor, Thickness = 2, Transparency = 0.93 })
 	Tween(MainScale, { Scale = 1 }, 0.5)
 	Tween(MainFrame, { BackgroundTransparency = 0 }, 0.5)
 	Tween(MainGlowOuter:FindFirstChild("UIStroke"), { Transparency = 0.86 }, 0.5)
@@ -1426,12 +1402,13 @@ function Library:CreateWindow(options)
 						BackgroundColor3 = CardColor,
 						Size = UDim2.new(1, 0, 0, 42),
 						AutomaticSize = Enum.AutomaticSize.Y,
-						ClipsDescendants = true,
+						ClipsDescendants = false,
 					}
 				)
 				Create("UICorner", { Parent = SectionContainer, CornerRadius = UDim.new(0, 12) })
-				Create("UIStroke", { Parent = SectionContainer, Color = BorderColor, Thickness = 1, Transparency = 0.22, ApplyStrokeMode = Enum.ApplyStrokeMode.Border })
+				Create("UIStroke", { Parent = SectionContainer, Color = BorderColor, Thickness = 1, Transparency = 0.08, ApplyStrokeMode = Enum.ApplyStrokeMode.Border })
 				Create("UIGradient", { Parent = SectionContainer, Rotation = 90, Color = ColorSequence.new({ ColorSequenceKeypoint.new(0, Color3.fromRGB(22, 17, 38)), ColorSequenceKeypoint.new(1, CardColor) }), Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0), NumberSequenceKeypoint.new(1, 0.12) }) })
+				local SectionGlow = Create("UIStroke", { Parent = SectionContainer, Color = AccentColor, Thickness = 1, Transparency = 0.9, ApplyStrokeMode = Enum.ApplyStrokeMode.Border })
 
 				table.insert(Window.AllCards, {
 					Card = SectionContainer,
