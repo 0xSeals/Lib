@@ -441,7 +441,7 @@ function Library:CreateWindow(options)
 			Parent = InfoHeader,
 			Text = "Feature Info",
 			Font = Enum.Font.GothamBold,
-			TextSize = 16,
+			TextSize = 18,
 			TextColor3 = TextColor,
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, 20, 0, 0),
@@ -675,8 +675,8 @@ function Library:CreateWindow(options)
 			TextSize = 16,
 			TextColor3 = TextColor,
 			BackgroundTransparency = 1,
-			Position = UDim2.new(0, 0, 0, 7),
-			Size = UDim2.new(1, 0, 0, 16),
+			Position = UDim2.new(0, 0, 0, 5),
+			Size = UDim2.new(1, 0, 0, 20),
 			TextXAlignment = Enum.TextXAlignment.Left,
 		}
 	)
@@ -686,11 +686,11 @@ function Library:CreateWindow(options)
 			Parent = TitleContainer,
 			Text = subText,
 			Font = Enum.Font.Gotham,
-			TextSize = 9,
+			TextSize = 11,
 			TextColor3 = subColor,
 			BackgroundTransparency = 1,
-			Position = UDim2.new(0, 0, 0, 22),
-			Size = UDim2.new(1, 0, 0, 12),
+			Position = UDim2.new(0, 0, 0, 25),
+			Size = UDim2.new(1, 0, 0, 14),
 			TextXAlignment = Enum.TextXAlignment.Left,
 		}
 	)
