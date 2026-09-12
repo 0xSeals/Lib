@@ -51,6 +51,7 @@ local function Create(className, properties)
 	end
 
 	if className == "TextLabel" or className == "TextButton" or className == "TextBox" then
+		instance.TextStrokeTransparency = 1
 		if properties.TextSize and properties.RichText ~= true then
 			instance.TextScaled = true
 			local constraint = Instance.new("UITextSizeConstraint")
@@ -161,15 +162,15 @@ local function MakeDraggable(topbar, object)
 	end)
 end
 
-local AccentColor = Color3.fromRGB(186, 112, 255)
-local AccentSoft = Color3.fromRGB(117, 77, 166)
-local BorderColor = Color3.fromRGB(82, 58, 112)
-local BackgroundColor = Color3.fromRGB(8, 7, 14)
-local CardColor = Color3.fromRGB(17, 13, 29)
-local InputColor = Color3.fromRGB(10, 8, 18)
-local HoverColor = Color3.fromRGB(38, 26, 57)
-local TextColor = Color3.fromRGB(247, 243, 255)
-local SubTextColor = Color3.fromRGB(177, 168, 199)
+local AccentColor = Color3.fromRGB(105, 157, 235)
+local AccentSoft = Color3.fromRGB(67, 94, 135)
+local BorderColor = Color3.fromRGB(48, 61, 82)
+local BackgroundColor = Color3.fromRGB(10, 12, 17)
+local CardColor = Color3.fromRGB(18, 22, 30)
+local InputColor = Color3.fromRGB(12, 15, 21)
+local HoverColor = Color3.fromRGB(29, 37, 49)
+local TextColor = Color3.fromRGB(241, 245, 250)
+local SubTextColor = Color3.fromRGB(148, 158, 174)
 
 -- // Global Notification API
 local GlobalNotifContainer
@@ -508,7 +509,7 @@ function Library:CreateWindow(options)
 		}
 	)
 	Create("UICorner", { Parent = InfoExampleBox, CornerRadius = UDim.new(0, 10) })
-	Create("UIStroke", { Parent = InfoExampleBox, Color = Color3.fromRGB(62, 42, 88), Thickness = 1 })
+	Create("UIStroke", { Parent = InfoExampleBox, Color = Color3.fromRGB(46, 59, 79), Thickness = 1 })
 	local InfoExampleText = Create(
 		"TextLabel",
 		{
@@ -1301,7 +1302,7 @@ function Library:CreateWindow(options)
 					Size = UDim2.new(1, -20, 1, -18),
 					Position = UDim2.new(0, 10, 0, 8),
 					ScrollBarThickness = 2,
-					ScrollBarImageColor3 = Color3.fromRGB(88, 58, 116),
+					ScrollBarImageColor3 = Color3.fromRGB(57, 73, 97),
 					Visible = false,
 					BorderSizePixel = 0,
 				}
@@ -1395,7 +1396,7 @@ function Library:CreateWindow(options)
 				Create("UICorner", { Parent = SectionContainer, CornerRadius = UDim.new(0, 13) })
 				local SectionStroke = Create("UIStroke", {
 					Parent = SectionContainer,
-					Color = Color3.fromRGB(86, 55, 122),
+					Color = Color3.fromRGB(52, 68, 91),
 					Thickness = 1,
 					Transparency = 0.18,
 					ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
@@ -1404,8 +1405,8 @@ function Library:CreateWindow(options)
 					Parent = SectionContainer,
 					Rotation = 90,
 					Color = ColorSequence.new({
-						ColorSequenceKeypoint.new(0, Color3.fromRGB(20, 16, 34)),
-						ColorSequenceKeypoint.new(1, Color3.fromRGB(15, 12, 27)),
+						ColorSequenceKeypoint.new(0, Color3.fromRGB(19, 23, 31)),
+						ColorSequenceKeypoint.new(1, Color3.fromRGB(12, 15, 21)),
 					}),
 				})
 
@@ -1826,7 +1827,7 @@ function Library:CreateWindow(options)
 							Position = UDim2.new(0, 10, 0, 78),
 							CanvasSize = UDim2.new(0, 0, 0, #options * 25),
 							ScrollBarThickness = 2,
-							ScrollBarImageColor3 = Color3.fromRGB(80, 58, 105),
+							ScrollBarImageColor3 = Color3.fromRGB(53, 68, 90),
 							BorderSizePixel = 0,
 						}
 					)
@@ -2486,7 +2487,7 @@ function Library:CreateWindow(options)
 							Font = Enum.Font.GothamBold,
 							TextSize = 12,
 							TextColor3 = TextColor,
-							BackgroundColor3 = Color3.fromRGB(88, 58, 116),
+							BackgroundColor3 = Color3.fromRGB(57, 73, 97),
 							Size = UDim2.new(0.5, -5, 0, 26),
 							Position = UDim2.new(0.5, 5, 0, 0),
 							AutoButtonColor = false,
