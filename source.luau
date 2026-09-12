@@ -166,7 +166,7 @@ end
 local AccentColor = Color3.fromRGB(190, 140, 255)
 local BackgroundColor = Color3.fromRGB(20, 20, 24)
 local CardColor = Color3.fromRGB(24, 24, 27)
-local HoverColor = Color3.fromRGB(17, 17, 20)
+local HoverColor = Color3.fromRGB(20, 20, 24)
 local TextColor = Color3.fromRGB(240, 240, 240)
 local SubTextColor = Color3.fromRGB(150, 150, 150)
 
