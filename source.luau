@@ -161,10 +161,10 @@ local function MakeDraggable(topbar, object)
 	end)
 end
 
-local AccentColor = Color3.fromRGB(190, 140, 255)
-local BackgroundColor = Color3.fromRGB(20, 20, 24)
-local CardColor = Color3.fromRGB(24, 24, 27)
-local HoverColor = Color3.fromRGB(20, 20, 24)
+local AccentColor = Color3.fromRGB(232, 217, 246)
+local BackgroundColor = Color3.fromRGB(10, 10, 25)
+local CardColor = Color3.fromRGB(14, 12, 32)
+local HoverColor = Color3.fromRGB(10, 10, 25)
 local TextColor = Color3.fromRGB(240, 240, 240)
 local SubTextColor = Color3.fromRGB(150, 150, 150)
 
