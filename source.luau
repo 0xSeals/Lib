@@ -130,12 +130,12 @@ local function MakeDraggable(topbar, object)
     end)
 end
 
-local AccentColor = Color3.fromRGB(168, 52, 255)
-local BackgroundColor = Color3.fromRGB(10, 7, 24)
-local CardColor = Color3.fromRGB(19, 13, 39)
-local HoverColor = Color3.fromRGB(35, 20, 65)
-local TextColor = Color3.fromRGB(245, 240, 255)
-local SubTextColor = Color3.fromRGB(180, 155, 215)
+local AccentColor = Color3.fromRGB(145, 55, 220)
+local BackgroundColor = Color3.fromRGB(10, 7, 20)
+local CardColor = Color3.fromRGB(22, 14, 38)
+local HoverColor = Color3.fromRGB(38, 22, 62)
+local TextColor = Color3.fromRGB(235, 245, 255)
+local SubTextColor = Color3.fromRGB(190, 160, 225)
 
 -- // Global Notification API
 local GlobalNotifContainer
@@ -325,7 +325,7 @@ function Library:CreateWindow(options)
     local MainFrame = Create("Frame", {Parent = ScreenGui, BackgroundColor3 = BackgroundColor, Size = UDim2.new(0, 1220, 0, 760), Position = UDim2.new(0.5, 0, 0.5, 0), AnchorPoint = Vector2.new(0.5, 0.5), ClipsDescendants = true, BackgroundTransparency = 1, Active = true})
     local MainScale = Create("UIScale", {Parent = MainFrame, Scale = 0.8})
     Create("UICorner", {Parent = MainFrame, CornerRadius = UDim.new(0, 14)})
-    Create("UIStroke", {Parent = MainFrame, Color = Color3.fromRGB(0, 105, 180), Thickness = 1.5})
+    Create("UIStroke", {Parent = MainFrame, Color = Color3.fromRGB(105, 45, 170), Thickness = 1.5})
     Tween(MainScale, {Scale = 1}, 0.5)
     Tween(MainFrame, {BackgroundTransparency = 0}, 0.5)
 
@@ -351,7 +351,7 @@ function Library:CreateWindow(options)
 
     local SearchBar = Create("Frame", {Parent = MainFrame, BackgroundColor3 = CardColor, Size = UDim2.new(0, 525, 0, 58), Position = UDim2.new(0.5, 0, 1, -38), AnchorPoint = Vector2.new(0.5, 1), ZIndex = 20})
     Create("UICorner", {Parent = SearchBar, CornerRadius = UDim.new(0, 12)})
-    local SearchIcon = Create("ImageLabel", {Parent = SearchBar, BackgroundTransparency = 1, Image = "rbxassetid://6031154871", ImageColor3 = SubTextColor, Size = UDim2.new(0, 22, 0, 22), Position = UDim2.new(0, 22, 0.5, -11)})
+    local SearchIcon = Create("ImageLabel", {Parent = SearchBar, BackgroundTransparency = 1, Image = "rbxassetid://6031154871", ImageColor3 = AccentColor, Size = UDim2.new(0, 22, 0, 22), Position = UDim2.new(0, 22, 0.5, -11)})
     local SearchInput = Create("TextBox", {Parent = SearchBar, BackgroundTransparency = 1, Size = UDim2.new(1, -65, 1, 0), Position = UDim2.new(0, 62, 0, 0), Font = Enum.Font.Gotham, TextSize = 12, TextColor3 = TextColor, PlaceholderText = "Search settings...", PlaceholderColor3 = SubTextColor, TextXAlignment = Enum.TextXAlignment.Left, ClearTextOnFocus = false})
 
     local CloseBtn = Create("TextButton", {Parent = TopBar, Text = "X", Font = Enum.Font.GothamBold, TextSize = 14, TextColor3 = SubTextColor, BackgroundTransparency = 1, Size = UDim2.new(0, 30, 1, 0), Position = UDim2.new(1, -35, 0, 0)})
@@ -360,7 +360,7 @@ function Library:CreateWindow(options)
     local Sidebar = Create("Frame", {Parent = MainFrame, BackgroundTransparency = 1, Size = UDim2.new(1, -80, 0, 92), Position = UDim2.new(0, 40, 0, 82), Active = true})
     local TabContainer = Create("Frame", {Parent = Sidebar, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 1, 0)})
     local TabLayout = Create("UIListLayout", {Parent = TabContainer, FillDirection = Enum.FillDirection.Horizontal, HorizontalAlignment = Enum.HorizontalAlignment.Center, VerticalAlignment = Enum.VerticalAlignment.Center, Padding = UDim.new(0, 14)})
-    local Divider = Create("Frame", {Parent = MainFrame, BackgroundColor3 = Color3.fromRGB(0, 70, 120), BackgroundTransparency = 0.7, BorderSizePixel = 0, Size = UDim2.new(1, -80, 0, 1), Position = UDim2.new(0, 40, 0, 184)})
+    local Divider = Create("Frame", {Parent = MainFrame, BackgroundColor3 = Color3.fromRGB(85, 35, 140), BackgroundTransparency = 0.7, BorderSizePixel = 0, Size = UDim2.new(1, -80, 0, 1), Position = UDim2.new(0, 40, 0, 184)})
     local ContentArea = Create("Frame", {Parent = MainFrame, BackgroundTransparency = 1, Size = UDim2.new(1, -80, 1, -235), Position = UDim2.new(0, 40, 0, 195), Active = true})
 
     local Sphere = Create("ImageButton", {Parent = ScreenGui, BackgroundColor3 = BackgroundColor, BackgroundTransparency = 0.2, Size = UDim2.new(0, 50, 0, 50), Position = UDim2.new(0.5, 0, 0.5, 0), AnchorPoint = Vector2.new(0.5, 0.5), Visible = false, AutoButtonColor = false, ImageTransparency = 1, ClipsDescendants = true})
@@ -521,19 +521,18 @@ function Library:CreateWindow(options)
         local TabBtn = Create("TextButton", {Parent = TabContainer, Text = "", BackgroundColor3 = HoverColor, BackgroundTransparency = 1, Size = UDim2.new(0, 180, 0, 76), AutoButtonColor = false})
         Create("UICorner", {Parent = TabBtn, CornerRadius = UDim.new(0, 10)})
         AddBounce(TabBtn, 0.98)
-        local Indicator = Create("Frame", {Name = "Indicator", Parent = TabBtn, BackgroundColor3 = AccentColor, Size = UDim2.new(1, 0, 0, 3), Position = UDim2.new(0, 0, 1, -2), BackgroundTransparency = isDefault and 0 or 1})
-        Create("UICorner", {Parent = Indicator, CornerRadius = UDim.new(0, 2)})
-        local TabIcon = Create("ImageLabel", {Parent = TabBtn, BackgroundTransparency = 1, Image = isLocked and "rbxassetid://6031082533" or "rbxassetid://6031082533", ImageColor3 = isLocked and Color3.fromRGB(255, 215, 0) or SubTextColor, Size = UDim2.new(0, 22, 0, 22), Position = UDim2.new(0.5, -11, 0, 10), ScaleType = Enum.ScaleType.Fit})
-        local Txt = Create("TextLabel", {Parent = TabBtn, Text = tabName, Font = Enum.Font.GothamBold, TextSize = 13, TextColor3 = isDefault and TextColor or SubTextColor, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 22), Position = UDim2.new(0, 0, 0, 43), TextXAlignment = Enum.TextXAlignment.Center})
+        local Indicator = Create("Frame", {Name = "Indicator", Parent = TabBtn, BackgroundColor3 = AccentColor, Size = UDim2.new(0, 0, 0, 3), Position = UDim2.new(0, 0, 1, -3), AnchorPoint = Vector2.new(0, 0.5)})
+        Create("UICorner", {Parent = Indicator, CornerRadius = UDim.new(0, 0)})
+        local Txt = Create("TextLabel", {Parent = TabBtn, Text = tabName, Font = Enum.Font.GothamBold, TextSize = 14, TextColor3 = SubTextColor, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 1, 0), Position = UDim2.new(0, 0, 0, 0), TextXAlignment = Enum.TextXAlignment.Center})
 
         if isLocked then
-            Create("ImageLabel", {Parent = TabBtn, Image = "rbxassetid://6031082533", ImageColor3 = Color3.fromRGB(255, 215, 0), BackgroundTransparency = 1, Size = UDim2.new(0, 12, 0, 12), Position = UDim2.new(0.5, 32, 0, 13)})
+            Create("ImageLabel", {Parent = TabBtn, Image = "rbxassetid://6031082533", ImageColor3 = Color3.fromRGB(255, 215, 0), BackgroundTransparency = 1, Size = UDim2.new(0, 14, 0, 14), Position = UDim2.new(1, -22, 0.5, -7)})
         end
 
         local TabContent = Create("Frame", {Parent = ContentArea, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 1, 0), Visible = false})
         local PageNav = Create("Frame", {Parent = TabContent, BackgroundColor3 = CardColor, BackgroundTransparency = 0.15, Size = UDim2.new(0, 300, 1, -10), Position = UDim2.new(0, 0, 0, 0)})
         Create("UICorner", {Parent = PageNav, CornerRadius = UDim.new(0, 12)})
-        Create("UIStroke", {Parent = PageNav, Color = Color3.fromRGB(0, 105, 180), Thickness = 1})
+        Create("UIStroke", {Parent = PageNav, Color = Color3.fromRGB(105, 45, 170), Thickness = 1})
         local PageNavList = Create("UIListLayout", {Parent = PageNav, FillDirection = Enum.FillDirection.Vertical, HorizontalAlignment = Enum.HorizontalAlignment.Left, Padding = UDim.new(0, 8), VerticalAlignment = Enum.VerticalAlignment.Top})
         local PageContainer = Create("Frame", {Parent = TabContent, BackgroundTransparency = 1, Size = UDim2.new(1, -325, 1, 0), Position = UDim2.new(0, 325, 0, 0)})
 
@@ -550,7 +549,7 @@ function Library:CreateWindow(options)
             
             if Window.CurrentTab then
                 Tween(Window.CurrentTab.Button, {BackgroundTransparency = 1}, 0.2)
-                Tween(Window.CurrentTab.Indicator, {BackgroundTransparency = 1}, 0.2)
+                Tween(Window.CurrentTab.Indicator, {Size = UDim2.new(0, 0, 0, 3)}, 0.2)
                 Tween(Window.CurrentTab.Txt, {TextColor3 = SubTextColor}, 0.2)
                 Window.CurrentTab.Content.Visible = false
             end
@@ -562,7 +561,7 @@ function Library:CreateWindow(options)
             Tween(TabConfig.Content, {Position = UDim2.new(0, 0, 0, 0)}, 0.35)
 
             Tween(TabBtn, {BackgroundTransparency = 0}, 0.2)
-            Tween(Indicator, {BackgroundTransparency = 0}, 0.3)
+            Tween(Indicator, {Size = UDim2.new(1, 0, 0, 3)}, 0.3)
             Tween(Txt, {TextColor3 = TextColor}, 0.2)
 
             if #TabConfig.Pages > 0 then
@@ -570,8 +569,8 @@ function Library:CreateWindow(options)
                 if TabConfig.CurrentPage ~= firstPage then
                     if TabConfig.CurrentPage then
                         Tween(TabConfig.CurrentPage.PageText, {TextColor3 = SubTextColor}, 0)
-                        Tween(TabConfig.CurrentPage.Btn, {BackgroundTransparency = 1}, 0.2)
-                        Tween(TabConfig.CurrentPage.Highlight, {BackgroundTransparency = 1}, 0)
+                        Tween(TabConfig.CurrentPage.PageIcon, {TextColor3 = SubTextColor}, 0)
+                        Tween(TabConfig.CurrentPage.Highlight, {Size = UDim2.new(0, 0, 1, 0), BackgroundTransparency = 1}, 0)
                         TabConfig.CurrentPage.Scroll.Visible = false
                     end
                     TabConfig.CurrentPage = firstPage
@@ -581,18 +580,18 @@ function Library:CreateWindow(options)
                     Tween(firstPage.Scroll, {Position = UDim2.new(0, 5, 0, 5)}, 0.35)
 
                     Tween(firstPage.PageText, {TextColor3 = TextColor}, 0)
+                    Tween(firstPage.PageIcon, {TextColor3 = AccentColor}, 0)
                     Tween(firstPage.Highlight, {Size = UDim2.new(1, 0, 0, 2), BackgroundTransparency = 0}, 0)
                 end
             end
         end)
 
         function TabConfig:CreatePage(pageName)
-            local PageBtn = Create("TextButton", {Parent = PageNav, Text = "", Font = Enum.Font.GothamBold, TextSize = 13, TextColor3 = SubTextColor, BackgroundColor3 = HoverColor, BackgroundTransparency = 1, Size = UDim2.new(1, -24, 0, 54), Position = UDim2.new(0, 12, 0, 10), AutoButtonColor = false, TextXAlignment = Enum.TextXAlignment.Left})
+            local PageBtn = Create("TextButton", {Parent = PageNav, Text = "", Font = Enum.Font.GothamBold, TextSize = 13, TextColor3 = SubTextColor, BackgroundColor3 = HoverColor, BackgroundTransparency = 1, Size = UDim2.new(1, -20, 0, 44), Position = UDim2.new(0, 10, 0, 10), AutoButtonColor = false})
             Create("UICorner", {Parent = PageBtn, CornerRadius = UDim.new(0, 8)})
-            local PageIcon = Create("ImageLabel", {Parent = PageBtn, BackgroundTransparency = 1, Image = "rbxassetid://6031082533", ImageColor3 = SubTextColor, Size = UDim2.new(0, 18, 0, 18), Position = UDim2.new(0, 18, 0.5, -9), ScaleType = Enum.ScaleType.Fit})
-            local PageText = Create("TextLabel", {Parent = PageBtn, Text = pageName, Font = Enum.Font.GothamBold, TextSize = 13, TextColor3 = SubTextColor, BackgroundTransparency = 1, Size = UDim2.new(1, -58, 1, 0), Position = UDim2.new(0, 48, 0, 0), TextXAlignment = Enum.TextXAlignment.Left})
+            local PageIcon = Create("TextLabel", {Parent = PageBtn, Text = "▤", Font = Enum.Font.GothamBold, TextSize = 18, TextColor3 = SubTextColor, BackgroundTransparency = 1, Size = UDim2.new(0, 42, 1, 0), Position = UDim2.new(0, 8, 0, 0), TextXAlignment = Enum.TextXAlignment.Center, TextYAlignment = Enum.TextYAlignment.Center})
+            local PageText = Create("TextLabel", {Parent = PageBtn, Text = pageName, Font = Enum.Font.GothamMedium, TextSize = 13, TextColor3 = SubTextColor, BackgroundTransparency = 1, Size = UDim2.new(1, -62, 1, 0), Position = UDim2.new(0, 58, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Center})
             local PageHighlight = Create("Frame", {Parent = PageBtn, BackgroundColor3 = AccentColor, Size = UDim2.new(0, 4, 1, 0), Position = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1})
-            Create("UICorner", {Parent = PageHighlight, CornerRadius = UDim.new(0, 3)})
             local PageScroll = Create("ScrollingFrame", {Parent = PageContainer, BackgroundTransparency = 1, Size = UDim2.new(1, -10, 1, -10), Position = UDim2.new(0, 5, 0, 5), ScrollBarThickness = 2, ScrollBarImageColor3 = Color3.fromRGB(60, 60, 65), Visible = false, BorderSizePixel = 0})
 
             local LeftColumn = Create("Frame", {Parent = PageScroll, BackgroundTransparency = 1, Size = UDim2.new(0.5, -5, 1, 0)})
@@ -611,8 +610,8 @@ function Library:CreateWindow(options)
                 if TabConfig.CurrentPage == PageObj then return end
                 if TabConfig.CurrentPage then
                     Tween(TabConfig.CurrentPage.PageText, {TextColor3 = SubTextColor}, 0.2)
-                    Tween(TabConfig.CurrentPage.Btn, {BackgroundTransparency = 1}, 0.2)
-                    Tween(TabConfig.CurrentPage.Highlight, {BackgroundTransparency = 1}, 0.2)
+                    Tween(TabConfig.CurrentPage.PageIcon, {TextColor3 = SubTextColor}, 0.2)
+                    Tween(TabConfig.CurrentPage.Highlight, {Size = UDim2.new(0, 0, 1, 0), BackgroundTransparency = 1}, 0.2)
                     TabConfig.CurrentPage.Scroll.Visible = false
                 end
                 TabConfig.CurrentPage = PageObj
@@ -622,17 +621,17 @@ function Library:CreateWindow(options)
                 Tween(PageObj.Scroll, {Position = UDim2.new(0, 5, 0, 5)}, 0.35)
 
                 Tween(PageText, {TextColor3 = TextColor}, 0.2)
-                Tween(PageBtn, {BackgroundTransparency = 0}, 0.2)
-                Tween(PageHighlight, {BackgroundTransparency = 0}, 0.3)
+                Tween(PageIcon, {TextColor3 = AccentColor}, 0.2)
+                Tween(PageHighlight, {Size = UDim2.new(0, 4, 1, 0), BackgroundTransparency = 0}, 0.3)
             end)
 
             if #TabConfig.Pages == 1 and not isLocked then
                 TabConfig.CurrentPage = PageObj
                 PageObj.Scroll.Visible = true
                 PageText.TextColor3 = TextColor
-                PageBtn.BackgroundTransparency = 0
+                PageIcon.TextColor3 = AccentColor
+                PageHighlight.Size = UDim2.new(0, 4, 1, 0)
                 PageHighlight.BackgroundTransparency = 0
-                PageBtn.BackgroundTransparency = 0
             end
 
             function PageObj:CreateSection(sectionName)
@@ -1246,7 +1245,7 @@ function Library:CreateWindow(options)
 
         if isDefault then
             TabBtn.BackgroundTransparency = 0
-            Indicator.Size = UDim2.new(0, 3, 0, 18)
+            Indicator.Size = UDim2.new(1, 0, 0, 3)
             Txt.TextColor3 = TextColor
             TabContent.Visible = true
             Window.CurrentTab = TabConfig
