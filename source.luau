@@ -52,6 +52,8 @@ local function Create(className, properties)
 
 	if className == "TextLabel" or className == "TextButton" or className == "TextBox" then
 		instance.TextStrokeTransparency = 1
+		instance.TextStrokeColor3 = Color3.new(0, 0, 0)
+		instance.TextStrokeTransparency = 1
 		if properties.TextSize and properties.RichText ~= true then
 			instance.TextScaled = true
 			local constraint = Instance.new("UITextSizeConstraint")
@@ -641,7 +643,7 @@ function Library:CreateWindow(options)
 	Create("UIStroke", { Parent = MainGlowOuter, Color = AccentColor, Thickness = 5, Transparency = 0.965 })
 	Tween(MainScale, { Scale = 1 }, 0.5)
 	Tween(MainFrame, { BackgroundTransparency = 0 }, 0.5)
-	Tween(MainGlowOuter:FindFirstChild("UIStroke"), { Transparency = 0.94 }, 0.5)
+	
 
 	local TopBar = Create(
 		"Frame",
@@ -664,7 +666,7 @@ function Library:CreateWindow(options)
 			return
 		end
 		MainGlowOuter.Position = MainFrame.Position
-		MainGlowOuter.Visible = MainFrame.Visible
+		MainGlowOuter.Visible = false
 	end)
 
 	local titleOffsetX = 16
@@ -903,10 +905,9 @@ function Library:CreateWindow(options)
 	local function SetWindowVisible(visible, showNotification)
 		if visible then
 			MainFrame.Visible = true
-			MainGlowOuter.Visible = true
 			Tween(MainScale, { Scale = 1 }, 0.35)
 			Tween(MainFrame, { BackgroundTransparency = Window.CurrentTransparency }, 0.35)
-			Tween(MainGlowOuter:FindFirstChild("UIStroke"), { Transparency = 0.94 }, 0.35)
+			
 			if showNotification then
 				Library:Notify({
 					Title = "Moon opened",
@@ -921,7 +922,6 @@ function Library:CreateWindow(options)
 			task.delay(0.28, function()
 				if not MainFrame.Visible then return end
 				MainFrame.Visible = false
-				MainGlowOuter.Visible = false
 			end)
 			if showNotification then
 				Library:Notify({
@@ -938,7 +938,6 @@ function Library:CreateWindow(options)
 	end)
 
 	UserInputService.InputBegan:Connect(function(input, gameProcessed)
-		if gameProcessed then return end
 		if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == ToggleKey then
 			if Popup.Visible then return end
 			if MainFrame.Visible then
@@ -1077,7 +1076,7 @@ function Library:CreateWindow(options)
 		Tween(NoBtn, { BackgroundTransparency = 1, TextTransparency = 1 }, 0.3)
 		Tween(MainScale, { Scale = 0.8 }, 0.3)
 		Tween(MainFrame, { BackgroundTransparency = 1 }, 0.3)
-		Tween(MainGlowOuter:FindFirstChild("UIStroke"), { Transparency = 1 }, 0.3)
+		
 		
 		for _, desc in ipairs(MainFrame:GetDescendants()) do
 			if desc:IsA("TextLabel") or desc:IsA("TextButton") or desc:IsA("TextBox") then
@@ -1419,7 +1418,7 @@ function Library:CreateWindow(options)
 					"Frame",
 					{
 						Parent = targetColumn,
-						BackgroundColor3 = CardColor,
+						BackgroundColor3 = Color3.fromRGB(18, 22, 30),
 						Size = UDim2.new(1, 0, 0, 42),
 						AutomaticSize = Enum.AutomaticSize.Y,
 						ClipsDescendants = false,
