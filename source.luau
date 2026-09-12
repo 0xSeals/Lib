@@ -161,12 +161,15 @@ local function MakeDraggable(topbar, object)
 	end)
 end
 
-local AccentColor = Color3.fromRGB(184, 105, 255)
-local BackgroundColor = Color3.fromRGB(11, 9, 20)
-local CardColor = Color3.fromRGB(19, 15, 36)
-local HoverColor = Color3.fromRGB(37, 25, 60)
-local TextColor = Color3.fromRGB(245, 240, 255)
-local SubTextColor = Color3.fromRGB(166, 157, 187)
+local AccentColor = Color3.fromRGB(183, 101, 255)
+local AccentSoft = Color3.fromRGB(126, 76, 184)
+local BorderColor = Color3.fromRGB(91, 63, 132)
+local BackgroundColor = Color3.fromRGB(9, 8, 16)
+local CardColor = Color3.fromRGB(18, 14, 32)
+local InputColor = Color3.fromRGB(11, 9, 20)
+local HoverColor = Color3.fromRGB(32, 23, 49)
+local TextColor = Color3.fromRGB(247, 243, 255)
+local SubTextColor = Color3.fromRGB(170, 160, 193)
 
 -- // Global Notification API
 local GlobalNotifContainer
@@ -433,7 +436,7 @@ function Library:CreateWindow(options)
 		"Frame",
 		{
 			Parent = InfoOverlay,
-			BackgroundColor3 = Color3.fromRGB(16, 16, 20),
+			BackgroundColor3 = CardColor,
 			Size = UDim2.new(0, 360, 0, 280),
 			Position = UDim2.new(0.5, 0, 0.5, 0),
 			AnchorPoint = Vector2.new(0.5, 0.5),
@@ -604,14 +607,14 @@ function Library:CreateWindow(options)
 				Font = Enum.Font.GothamBold,
 				TextSize = 10,
 				TextColor3 = SubTextColor,
-				BackgroundColor3 = Color3.fromRGB(35, 35, 40),
+				BackgroundColor3 = HoverColor,
 				Size = UDim2.new(0, 16, 0, 16),
 				Position = pos,
 				AutoButtonColor = false,
 				ZIndex = 5,
 			}
 		)
-		Create("UICorner", { Parent = Btn, CornerRadius = UDim.new(0, 10) })
+		Create("UICorner", { Parent = Btn, CornerRadius = UDim.new(0, 9) })
 		AddBounce(Btn)
 		Btn.MouseEnter:Connect(function()
 			Tween(Btn, { TextColor3 = TextColor, BackgroundColor3 = AccentColor }, 0.2)
@@ -635,25 +638,40 @@ function Library:CreateWindow(options)
 			ClipsDescendants = true,
 			BackgroundTransparency = 1,
 			Active = true,
+			ZIndex = 1,
 		}
 	)
 	local MainScale = Create("UIScale", { Parent = MainFrame, Scale = 0.8 })
-	Create("UICorner", { Parent = MainFrame, CornerRadius = UDim.new(0, 10) })
-	Create("UIStroke", { Parent = MainFrame, Color = Color3.fromRGB(170, 91, 245), Thickness = 1.25, Transparency = 0.12 })
-	-- Subtle purple outer glow (kept intentionally soft)
-	local MainGlow = Create("Frame", {
+	Create("UICorner", { Parent = MainFrame, CornerRadius = UDim.new(0, 14) })
+	Create("UIStroke", { Parent = MainFrame, Color = AccentSoft, Thickness = 1, Transparency = 0.18, ApplyStrokeMode = Enum.ApplyStrokeMode.Border })
+
+	-- Soft outer glow. Kept outside MainFrame so ClipsDescendants cannot cut it off.
+	local MainGlowOuter = Create("Frame", {
 		Name = "MoonGlow",
-		Parent = MainFrame,
+		Parent = ScreenGui,
 		BackgroundTransparency = 1,
-		Size = UDim2.new(1, 6, 1, 6),
-		Position = UDim2.new(0, -3, 0, -3),
+		Size = UDim2.new(0, 792, 0, 512),
+		Position = UDim2.new(0.5, 0, 0.5, 0),
+		AnchorPoint = Vector2.new(0.5, 0.5),
 		ZIndex = 0,
 		Active = false,
 	})
-	Create("UICorner", { Parent = MainGlow, CornerRadius = UDim.new(0, 12) })
-	Create("UIStroke", { Parent = MainGlow, Color = AccentColor, Thickness = 3, Transparency = 0.78 })
+	Create("UICorner", { Parent = MainGlowOuter, CornerRadius = UDim.new(0, 17) })
+	Create("UIStroke", { Parent = MainGlowOuter, Color = AccentColor, Thickness = 3, Transparency = 0.86 })
+	local MainGlowInner = Create("Frame", {
+		Parent = MainGlowOuter,
+		BackgroundTransparency = 1,
+		Size = UDim2.new(1, -6, 1, -6),
+		Position = UDim2.new(0.5, 0, 0.5, 0),
+		AnchorPoint = Vector2.new(0.5, 0.5),
+		ZIndex = 0,
+	})
+	Create("UICorner", { Parent = MainGlowInner, CornerRadius = UDim.new(0, 15) })
+	Create("UIStroke", { Parent = MainGlowInner, Color = AccentColor, Thickness = 2, Transparency = 0.91 })
 	Tween(MainScale, { Scale = 1 }, 0.5)
 	Tween(MainFrame, { BackgroundTransparency = 0 }, 0.5)
+	Tween(MainGlowOuter:FindFirstChild("UIStroke"), { Transparency = 0.86 }, 0.5)
+	Tween(MainGlowInner:FindFirstChild("UIStroke"), { Transparency = 0.91 }, 0.5)
 
 	local TopBar = Create(
 		"Frame",
@@ -667,6 +685,17 @@ function Library:CreateWindow(options)
 		}
 	)
 	MakeDraggable(TopBar, MainFrame)
+	MainGlowOuter.Position = MainFrame.Position
+	MainGlowOuter.Size = UDim2.new(0, 792, 0, 512)
+	local GlowSync
+	GlowSync = RunService.RenderStepped:Connect(function()
+		if not ScreenGui.Parent then
+			GlowSync:Disconnect()
+			return
+		end
+		MainGlowOuter.Position = MainFrame.Position
+		MainGlowOuter.Visible = MainFrame.Visible
+	end)
 
 	local titleOffsetX = 16
 	if topbarLogo then
@@ -731,8 +760,8 @@ function Library:CreateWindow(options)
 			ZIndex = 10,
 		}
 	)
-	Create("UICorner", { Parent = SearchBar, CornerRadius = UDim.new(0, 9) })
-	Create("UIStroke", { Parent = SearchBar, Color = Color3.fromRGB(91, 58, 126), Thickness = 1, Transparency = 0.18 })
+	Create("UICorner", { Parent = SearchBar, CornerRadius = UDim.new(0, 11) })
+	Create("UIStroke", { Parent = SearchBar, Color = BorderColor, Thickness = 1, Transparency = 0.28 })
 	local SearchIcon = Create(
 		"ImageLabel",
 		{
@@ -898,6 +927,7 @@ function Library:CreateWindow(options)
 		Tween(MainFrame, { BackgroundTransparency = 1 }, 0.4)
 		task.wait(0.3)
 		MainFrame.Visible = false
+		MainGlowOuter.Visible = false
 		Sphere.Visible = true
 		Tween(Sphere, { Size = UDim2.new(0, 50, 0, 50) }, 0.4)
 
@@ -923,6 +953,7 @@ function Library:CreateWindow(options)
 		task.wait(0.2)
 		Sphere.Visible = false
 		MainFrame.Visible = true
+		MainGlowOuter.Visible = true
 		Tween(MainScale, { Scale = 1 }, 0.4)
 		Tween(MainFrame, { BackgroundTransparency = Window.CurrentTransparency }, 0.4)
 	end)
@@ -1050,6 +1081,8 @@ function Library:CreateWindow(options)
 		Tween(NoBtn, { BackgroundTransparency = 1, TextTransparency = 1 }, 0.3)
 		Tween(MainScale, { Scale = 0.8 }, 0.3)
 		Tween(MainFrame, { BackgroundTransparency = 1 }, 0.3)
+		Tween(MainGlowOuter:FindFirstChild("UIStroke"), { Transparency = 1 }, 0.3)
+		Tween(MainGlowInner:FindFirstChild("UIStroke"), { Transparency = 1 }, 0.3)
 
 		for _, desc in ipairs(MainFrame:GetDescendants()) do
 			if desc:IsA("TextLabel") or desc:IsA("TextButton") or desc:IsA("TextBox") then
@@ -1145,7 +1178,7 @@ function Library:CreateWindow(options)
 				ZIndex = 6,
 			}
 		)
-		Create("UICorner", { Parent = TabBtn, CornerRadius = UDim.new(0, 10) })
+		Create("UICorner", { Parent = TabBtn, CornerRadius = UDim.new(0, 11) })
 		AddBounce(TabBtn, 0.98)
 		-- Active highlight is underneath the tab instead of on the left.
 		local Indicator = Create(
@@ -1396,8 +1429,9 @@ function Library:CreateWindow(options)
 						ClipsDescendants = true,
 					}
 				)
-				Create("UICorner", { Parent = SectionContainer, CornerRadius = UDim.new(0, 10) })
-				Create("UIStroke", { Parent = SectionContainer, Color = Color3.fromRGB(91, 58, 126), Thickness = 1, Transparency = 0.18 })
+				Create("UICorner", { Parent = SectionContainer, CornerRadius = UDim.new(0, 12) })
+				Create("UIStroke", { Parent = SectionContainer, Color = BorderColor, Thickness = 1, Transparency = 0.22, ApplyStrokeMode = Enum.ApplyStrokeMode.Border })
+				Create("UIGradient", { Parent = SectionContainer, Rotation = 90, Color = ColorSequence.new({ ColorSequenceKeypoint.new(0, Color3.fromRGB(22, 17, 38)), ColorSequenceKeypoint.new(1, CardColor) }), Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0), NumberSequenceKeypoint.new(1, 0.12) }) })
 
 				table.insert(Window.AllCards, {
 					Card = SectionContainer,
@@ -1461,8 +1495,8 @@ function Library:CreateWindow(options)
 							AutoButtonColor = false,
 						}
 					)
-					Create("UICorner", { Parent = Btn, CornerRadius = UDim.new(0, 10) })
-					Create("UIStroke", { Parent = Btn, Color = Color3.fromRGB(57, 39, 79), Thickness = 1 })
+					Create("UICorner", { Parent = Btn, CornerRadius = UDim.new(0, 9) })
+					Create("UIStroke", { Parent = Btn, Color = BorderColor, Thickness = 1 })
 
 					AddBounce(Btn)
 					Btn.MouseEnter:Connect(function()
@@ -1505,8 +1539,8 @@ function Library:CreateWindow(options)
 							AutoButtonColor = false,
 						}
 					)
-					Create("UICorner", { Parent = Btn, CornerRadius = UDim.new(0, 10) })
-					Create("UIStroke", { Parent = Btn, Color = Color3.fromRGB(57, 39, 79), Thickness = 1 })
+					Create("UICorner", { Parent = Btn, CornerRadius = UDim.new(0, 9) })
+					Create("UIStroke", { Parent = Btn, Color = BorderColor, Thickness = 1 })
 
 					AddBounce(Btn)
 					Btn.MouseEnter:Connect(function()
@@ -1557,7 +1591,7 @@ function Library:CreateWindow(options)
 							AutoButtonColor = false,
 						}
 					)
-					Create("UICorner", { Parent = Lever, CornerRadius = UDim.new(0, 10) })
+					Create("UICorner", { Parent = Lever, CornerRadius = UDim.new(0, 9) })
 					AddBounce(Lever)
 
 					local Knob = Create(
@@ -1642,8 +1676,8 @@ function Library:CreateWindow(options)
 							Position = UDim2.new(0, 10, 0, 25),
 						}
 					)
-					Create("UICorner", { Parent = TrackBase, CornerRadius = UDim.new(0, 10) })
-					Create("UIStroke", { Parent = TrackBase, Color = Color3.fromRGB(57, 39, 79), Thickness = 1 })
+					Create("UICorner", { Parent = TrackBase, CornerRadius = UDim.new(0, 9) })
+					Create("UIStroke", { Parent = TrackBase, Color = BorderColor, Thickness = 1 })
 
 					local Fill = Create(
 						"Frame",
@@ -1769,8 +1803,8 @@ function Library:CreateWindow(options)
 						}
 					)
 					Create("UIPadding", { Parent = MainBtn, PaddingLeft = UDim.new(0, 8) })
-					Create("UICorner", { Parent = MainBtn, CornerRadius = UDim.new(0, 10) })
-					Create("UIStroke", { Parent = MainBtn, Color = Color3.fromRGB(57, 39, 79), Thickness = 1 })
+					Create("UICorner", { Parent = MainBtn, CornerRadius = UDim.new(0, 9) })
+					Create("UIStroke", { Parent = MainBtn, Color = BorderColor, Thickness = 1 })
 					AddBounce(MainBtn, 0.98)
 					local Arrow = Create(
 						"TextLabel",
@@ -1794,7 +1828,7 @@ function Library:CreateWindow(options)
 							Font = Enum.Font.Gotham,
 							TextSize = 12,
 							TextColor3 = TextColor,
-							BackgroundColor3 = Color3.fromRGB(15, 15, 18),
+							BackgroundColor3 = InputColor,
 							Size = UDim2.new(1, -20, 0, 24),
 							Position = UDim2.new(0, 10, 0, 50),
 							TextXAlignment = Enum.TextXAlignment.Left,
@@ -1805,7 +1839,7 @@ function Library:CreateWindow(options)
 					Create("UIPadding", { Parent = SearchBox, PaddingLeft = UDim.new(0, 8) })
 					Create("UICorner", { Parent = SearchBox, CornerRadius = UDim.new(0, 10) })
 					local SearchStroke =
-						Create("UIStroke", { Parent = SearchBox, Color = Color3.fromRGB(57, 39, 79), Thickness = 1 })
+						Create("UIStroke", { Parent = SearchBox, Color = BorderColor, Thickness = 1 })
 
 					local ListFrame = Create(
 						"ScrollingFrame",
@@ -1987,7 +2021,7 @@ function Library:CreateWindow(options)
 					Create("UIPadding", { Parent = Input, PaddingLeft = UDim.new(0, 8) })
 					Create("UICorner", { Parent = Input, CornerRadius = UDim.new(0, 10) })
 					local Stroke =
-						Create("UIStroke", { Parent = Input, Color = Color3.fromRGB(57, 39, 79), Thickness = 1 })
+						Create("UIStroke", { Parent = Input, Color = BorderColor, Thickness = 1 })
 
 					local function internalSet(v)
 						Input.Text = tostring(v)
@@ -2337,13 +2371,13 @@ function Library:CreateWindow(options)
 					)
 					Create("UIPadding", { Parent = ManagerSearch, PaddingLeft = UDim.new(0, 8) })
 					Create("UICorner", { Parent = ManagerSearch, CornerRadius = UDim.new(0, 10) })
-					Create("UIStroke", { Parent = ManagerSearch, Color = Color3.fromRGB(57, 39, 79), Thickness = 1 })
+					Create("UIStroke", { Parent = ManagerSearch, Color = BorderColor, Thickness = 1 })
 
 					local Monitor = Create(
 						"ScrollingFrame",
 						{
 							Parent = ManagerFrame,
-							BackgroundColor3 = Color3.fromRGB(15, 15, 18),
+							BackgroundColor3 = InputColor,
 							Size = UDim2.new(1, -20, 0, 110),
 							Position = UDim2.new(0, 10, 0, 35),
 							ScrollBarThickness = 2,
@@ -2352,7 +2386,7 @@ function Library:CreateWindow(options)
 						}
 					)
 					Create("UICorner", { Parent = Monitor, CornerRadius = UDim.new(0, 10) })
-					Create("UIStroke", { Parent = Monitor, Color = Color3.fromRGB(57, 39, 79), Thickness = 1 })
+					Create("UIStroke", { Parent = Monitor, Color = BorderColor, Thickness = 1 })
 					local MonitorLayout = Create(
 						"UIListLayout",
 						{ Parent = Monitor, SortOrder = Enum.SortOrder.LayoutOrder, Padding = UDim.new(0, 5) }
@@ -2404,7 +2438,7 @@ function Library:CreateWindow(options)
 					)
 					Create("UIPadding", { Parent = NameBox, PaddingLeft = UDim.new(0, 8) })
 					Create("UICorner", { Parent = NameBox, CornerRadius = UDim.new(0, 10) })
-					Create("UIStroke", { Parent = NameBox, Color = Color3.fromRGB(57, 39, 79), Thickness = 1 })
+					Create("UIStroke", { Parent = NameBox, Color = BorderColor, Thickness = 1 })
 
 					local CreateBtn = Create(
 						"TextButton",
