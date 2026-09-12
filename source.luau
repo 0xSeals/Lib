@@ -518,15 +518,54 @@ function Library:CreateWindow(options)
             end
         end
 
-        local TabBtn = Create("TextButton", {Parent = TabContainer, Text = "", BackgroundColor3 = HoverColor, BackgroundTransparency = 1, Size = UDim2.new(0, 180, 0, 76), AutoButtonColor = false})
+        -- Icon-only top tabs. The underline remains centered directly beneath the icon.
+        local TabBtn = Create("TextButton", {Parent = TabContainer, Text = "", BackgroundColor3 = HoverColor, BackgroundTransparency = 1, Size = UDim2.new(0, 86, 0, 76), AutoButtonColor = false})
         Create("UICorner", {Parent = TabBtn, CornerRadius = UDim.new(0, 10)})
         AddBounce(TabBtn, 0.98)
-        local Indicator = Create("Frame", {Name = "Indicator", Parent = TabBtn, BackgroundColor3 = AccentColor, Size = UDim2.new(0, 0, 0, 3), Position = UDim2.new(0, 0, 1, -3), AnchorPoint = Vector2.new(0, 0.5)})
-        Create("UICorner", {Parent = Indicator, CornerRadius = UDim.new(0, 0)})
-        local Txt = Create("TextLabel", {Parent = TabBtn, Text = tabName, Font = Enum.Font.GothamBold, TextSize = 14, TextColor3 = SubTextColor, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 1, 0), Position = UDim2.new(0, 0, 0, 0), TextXAlignment = Enum.TextXAlignment.Center})
+
+        local TabIconIds = {
+            ["Main"] = "rbxassetid://6031075938",
+            ["Settings"] = "rbxassetid://6031280882",
+            ["Pro Configs"] = "rbxassetid://6031094678"
+        }
+
+        local iconId = TabIconIds[tabName] or "rbxassetid://6031075938"
+        local TabIcon = Create("ImageLabel", {
+            Name = "TabIcon",
+            Parent = TabBtn,
+            Image = iconId,
+            ImageColor3 = SubTextColor,
+            BackgroundTransparency = 1,
+            Size = UDim2.new(0, 30, 0, 30),
+            Position = UDim2.new(0.5, 0, 0.5, -5),
+            AnchorPoint = Vector2.new(0.5, 0.5),
+            ScaleType = Enum.ScaleType.Fit
+        })
+
+        local Indicator = Create("Frame", {
+            Name = "Indicator",
+            Parent = TabBtn,
+            BackgroundColor3 = AccentColor,
+            Size = UDim2.new(0, 0, 0, 3),
+            Position = UDim2.new(0.5, 0, 1, -7),
+            AnchorPoint = Vector2.new(0.5, 0.5)
+        })
+        Create("UICorner", {Parent = Indicator, CornerRadius = UDim.new(0, 2)})
+
+        local Txt = nil -- Kept in TabConfig for backwards compatibility; tabs are icon-only now.
 
         if isLocked then
-            Create("ImageLabel", {Parent = TabBtn, Image = "rbxassetid://6031082533", ImageColor3 = Color3.fromRGB(255, 215, 0), BackgroundTransparency = 1, Size = UDim2.new(0, 14, 0, 14), Position = UDim2.new(1, -22, 0.5, -7)})
+            Create("ImageLabel", {
+                Parent = TabBtn,
+                Name = "LockIcon",
+                Image = "rbxassetid://6031082533",
+                ImageColor3 = Color3.fromRGB(255, 215, 0),
+                BackgroundTransparency = 1,
+                Size = UDim2.new(0, 12, 0, 12),
+                Position = UDim2.new(0.5, 17, 0.5, -19),
+                AnchorPoint = Vector2.new(0.5, 0.5),
+                ScaleType = Enum.ScaleType.Fit
+            })
         end
 
         local TabContent = Create("Frame", {Parent = ContentArea, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 1, 0), Visible = false})
@@ -536,7 +575,7 @@ function Library:CreateWindow(options)
         local PageNavList = Create("UIListLayout", {Parent = PageNav, FillDirection = Enum.FillDirection.Vertical, HorizontalAlignment = Enum.HorizontalAlignment.Left, Padding = UDim.new(0, 8), VerticalAlignment = Enum.VerticalAlignment.Top})
         local PageContainer = Create("Frame", {Parent = TabContent, BackgroundTransparency = 1, Size = UDim2.new(1, -325, 1, 0), Position = UDim2.new(0, 325, 0, 0)})
 
-        local TabConfig = {Button = TabBtn, Content = TabContent, Indicator = Indicator, Txt = Txt, Pages = {}, CurrentPage = nil}
+        local TabConfig = {Button = TabBtn, Content = TabContent, Indicator = Indicator, Icon = TabIcon, Txt = Txt, Pages = {}, CurrentPage = nil}
         table.insert(Window.Tabs, TabConfig)
 
         TabBtn.MouseButton1Click:Connect(function()
@@ -550,7 +589,7 @@ function Library:CreateWindow(options)
             if Window.CurrentTab then
                 Tween(Window.CurrentTab.Button, {BackgroundTransparency = 1}, 0.2)
                 Tween(Window.CurrentTab.Indicator, {Size = UDim2.new(0, 0, 0, 3)}, 0.2)
-                Tween(Window.CurrentTab.Txt, {TextColor3 = SubTextColor}, 0.2)
+                Tween(Window.CurrentTab.Icon, {ImageColor3 = SubTextColor}, 0.2)
                 Window.CurrentTab.Content.Visible = false
             end
             
@@ -561,8 +600,8 @@ function Library:CreateWindow(options)
             Tween(TabConfig.Content, {Position = UDim2.new(0, 0, 0, 0)}, 0.35)
 
             Tween(TabBtn, {BackgroundTransparency = 0}, 0.2)
-            Tween(Indicator, {Size = UDim2.new(1, 0, 0, 3)}, 0.3)
-            Tween(Txt, {TextColor3 = TextColor}, 0.2)
+            Tween(Indicator, {Size = UDim2.new(0, 40, 0, 3)}, 0.3)
+            Tween(TabIcon, {ImageColor3 = TextColor}, 0.2)
 
             if #TabConfig.Pages > 0 then
                 local firstPage = TabConfig.Pages[1]
