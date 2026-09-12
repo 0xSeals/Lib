@@ -195,7 +195,7 @@ function Library:Notify(options)
 		}
 	)
 	Create("UICorner", { Parent = Notif, CornerRadius = UDim.new(0, 14) })
-	local Stroke = Create("UIStroke", { Parent = Notif, Color = AccentColor, Thickness = 1, Transparency = 1 })
+	local Stroke = Create("UIStroke", { Parent = Notif, Color = AccentColor, Thickness = 1.5, Transparency = 1 })
 	local NotifScale = Create("UIScale", { Parent = Notif, Scale = 0.94 })
 
 	local TitleText = Create(
@@ -258,11 +258,16 @@ function Library:CreateWindow(options)
 	local topbarLogo = nil
 	local logoSize = 32
 	local sphIconSize = 26
+	local ToggleKey = Enum.KeyCode.RightShift
 
 	if type(options) == "table" then
 		hubName = options.Title or hubName
 		subText = options.Subtitle or subText
 		subColor = options.SubtitleColor or subColor
+
+		if options.ToggleKey ~= nil then
+			ToggleKey = options.ToggleKey
+		end
 
 		if options.SphereText ~= nil then
 			sphTextToggle = options.SphereText
@@ -327,7 +332,7 @@ function Library:CreateWindow(options)
 		)
 		Create("UICorner", { Parent = Notif, CornerRadius = UDim.new(0, 14) })
 
-		local Stroke = Create("UIStroke", { Parent = Notif, Color = AccentColor, Thickness = 1, Transparency = 1 })
+		local Stroke = Create("UIStroke", { Parent = Notif, Color = AccentColor, Thickness = 1.5, Transparency = 1 })
 		local NotifScale = Create("UIScale", { Parent = Notif, Scale = 0.94 })
 
 		local LockIcon = Create(
@@ -835,10 +840,11 @@ function Library:CreateWindow(options)
 			AutoButtonColor = false,
 			ImageTransparency = 1,
 			ClipsDescendants = true,
+			Active = false,
 		}
 	)
-	Create("UICorner", { Parent = Sphere, CornerRadius = UDim.new(0, 10) })
-	Create("UIStroke", { Parent = Sphere, Color = AccentColor, Thickness = 2 })
+	Create("UICorner", { Parent = Sphere, CornerRadius = UDim.new(0, 12) })
+	Create("UIStroke", { Parent = Sphere, Color = AccentColor, Thickness = 0 })
 
 	-- MODIFIED SECTION: Text Label prioritized if SphereText toggle is true. Avoids passing boolean as Text.
 	local SphereImageLabel = Create(
@@ -887,41 +893,64 @@ function Library:CreateWindow(options)
 		end
 	end
 
+	local function GetKeyName(key)
+		if typeof(key) == "EnumItem" then
+			return key.Name:gsub("Left", "L "):gsub("Right", "R ")
+		end
+		return tostring(key)
+	end
+
+	local function SetWindowVisible(visible, showNotification)
+		if visible then
+			MainFrame.Visible = true
+			MainGlowOuter.Visible = true
+			Tween(MainScale, { Scale = 1 }, 0.35)
+			Tween(MainFrame, { BackgroundTransparency = Window.CurrentTransparency }, 0.35)
+			Tween(MainGlowOuter:FindFirstChild("UIStroke"), { Transparency = 0.94 }, 0.35)
+			if showNotification then
+				Library:Notify({
+					Title = "Moon opened",
+					Description = "Press " .. GetKeyName(ToggleKey) .. " to minimize / open Moon.",
+					Duration = 3,
+				})
+			end
+		else
+			Tween(MainScale, { Scale = 0 }, 0.35)
+			Tween(MainFrame, { BackgroundTransparency = 1 }, 0.35)
+			Tween(MainGlowOuter:FindFirstChild("UIStroke"), { Transparency = 1 }, 0.35)
+			task.delay(0.28, function()
+				if not MainFrame.Visible then return end
+				MainFrame.Visible = false
+				MainGlowOuter.Visible = false
+			end)
+			if showNotification then
+				Library:Notify({
+					Title = "Moon minimized",
+					Description = "Press " .. GetKeyName(ToggleKey) .. " to open Moon again.",
+					Duration = 4,
+				})
+			end
+		end
+	end
+
 	MinBtn.MouseButton1Click:Connect(function()
-		Tween(MainScale, { Scale = 0 }, 0.4)
-		Tween(MainFrame, { BackgroundTransparency = 1 }, 0.4)
-		task.wait(0.3)
-		MainFrame.Visible = false
-		MainGlowOuter.Visible = false
-		Sphere.Visible = true
-		Tween(Sphere, { Size = UDim2.new(0, 50, 0, 50) }, 0.4)
+		SetWindowVisible(false, true)
+	end)
 
-		-- Corrected fade logic depending on Text toggle
-		if not sphTextToggle and sphImage then
-			Tween(SphereImageLabel, { ImageTransparency = 0 }, 0.4)
-		elseif sphTextToggle then
-			Tween(SphereTextLabel, { TextTransparency = 0 }, 0.4)
+	UserInputService.InputBegan:Connect(function(input, gameProcessed)
+		if gameProcessed then return end
+		if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == ToggleKey then
+			if Popup.Visible then return end
+			if MainFrame.Visible then
+				SetWindowVisible(false, true)
+			else
+				SetWindowVisible(true, true)
+			end
 		end
 	end)
 
-	Sphere.MouseButton1Click:Connect(function()
-		Tween(Sphere, { Size = UDim2.new(0, 0, 0, 0) }, 0.3)
-
-		-- Corrected fade logic depending on Text toggle
-		if not sphTextToggle and sphImage then
-			Tween(SphereImageLabel, { ImageTransparency = 1 }, 0.3)
-		end
-		if sphTextToggle then
-			Tween(SphereTextLabel, { TextTransparency = 1 }, 0.3)
-		end
-
-		task.wait(0.2)
-		Sphere.Visible = false
-		MainFrame.Visible = true
-		MainGlowOuter.Visible = true
-		Tween(MainScale, { Scale = 1 }, 0.4)
-		Tween(MainFrame, { BackgroundTransparency = Window.CurrentTransparency }, 0.4)
-	end)
+	-- The old floating sphere is intentionally disabled; the keyboard toggle is the only minimize/re-open control.
+	Sphere.Visible = false
 
 	local Popup = Create(
 		"Frame",
@@ -939,7 +968,7 @@ function Library:CreateWindow(options)
 		"Frame",
 		{
 			Parent = Popup,
-			BackgroundColor3 = Color3.fromRGB(20, 20, 24),
+			BackgroundColor3 = CardColor,
 			Size = UDim2.new(0, 320, 0, 160),
 			Position = UDim2.new(0.5, 0, 0.5, 0),
 			AnchorPoint = Vector2.new(0.5, 0.5),
@@ -948,10 +977,10 @@ function Library:CreateWindow(options)
 			ClipsDescendants = false,
 		}
 	)
-	Create("UICorner", { Parent = PopupCard, CornerRadius = UDim.new(0, 10) })
+	Create("UICorner", { Parent = PopupCard, CornerRadius = UDim.new(0, 14) })
 	local PopupScale = Create("UIScale", { Parent = PopupCard, Scale = 0.8 })
 	local PopupStroke =
-		Create("UIStroke", { Parent = PopupCard, Color = Color3.fromRGB(50, 50, 55), Thickness = 1, Transparency = 1 })
+		Create("UIStroke", { Parent = PopupCard, Color = BorderColor, Thickness = 1.5, Transparency = 1 })
 	local PopupTitle = Create(
 		"TextLabel",
 		{
@@ -1003,6 +1032,7 @@ function Library:CreateWindow(options)
 		}
 	)
 	Create("UICorner", { Parent = YesBtn, CornerRadius = UDim.new(0, 10) })
+	Create("UIStroke", { Parent = YesBtn, Color = BorderColor, Thickness = 1, Transparency = 0.35 })
 	AddBounce(YesBtn)
 	local NoBtn = Create(
 		"TextButton",
@@ -1012,7 +1042,7 @@ function Library:CreateWindow(options)
 			Font = Enum.Font.GothamBold,
 			TextSize = 13,
 			TextColor3 = TextColor,
-			BackgroundColor3 = Color3.fromRGB(40, 40, 45),
+			BackgroundColor3 = InputColor,
 			Size = UDim2.new(0, 125, 0, 36),
 			Position = UDim2.new(0.5, -135, 0, 105),
 			ZIndex = 102,
@@ -1022,6 +1052,7 @@ function Library:CreateWindow(options)
 		}
 	)
 	Create("UICorner", { Parent = NoBtn, CornerRadius = UDim.new(0, 10) })
+	Create("UIStroke", { Parent = NoBtn, Color = BorderColor, Thickness = 1, Transparency = 0.35 })
 	AddBounce(NoBtn)
 
 	CloseBtn.MouseButton1Click:Connect(function()
