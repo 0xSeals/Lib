@@ -265,7 +265,7 @@ function Library:CreateWindow(options)
     Create("UIStroke", {Parent = InfoCard, Color = AccentColor, Thickness = 1.5, Transparency = 1})
     local InfoScale = Create("UIScale", {Parent = InfoCard, Scale = 0})
 
-    local InfoHeader = Create("Frame", {Parent = InfoCard, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 70), ZIndex = 152})
+    local InfoHeader = Create("Frame", {Parent = InfoCard, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 64), ZIndex = 152})
     local InfoTitle = Create("TextLabel", {Parent = InfoHeader, Text = "Feature Info", Font = Enum.Font.GothamBold, TextSize = 16, TextColor3 = TextColor, BackgroundTransparency = 1, Position = UDim2.new(0, 20, 0, 0), Size = UDim2.new(1, -60, 1, 0), TextXAlignment = Enum.TextXAlignment.Left, TextTransparency = 1, ZIndex = 152})
     local InfoCloseBtn = Create("TextButton", {Parent = InfoHeader, Text = "X", Font = Enum.Font.GothamBold, TextSize = 14, TextColor3 = SubTextColor, BackgroundTransparency = 1, Size = UDim2.new(0, 40, 1, 0), Position = UDim2.new(1, -40, 0, 0), ZIndex = 152, TextTransparency = 1})
     AddBounce(InfoCloseBtn)
@@ -324,14 +324,14 @@ function Library:CreateWindow(options)
         Btn.MouseButton1Click:Connect(function() OpenInfoWindow(data) end)
     end
 
-    local MainFrame = Create("Frame", {Parent = ScreenGui, BackgroundColor3 = BackgroundColor, Size = UDim2.new(0, 950, 0, 620), Position = UDim2.new(0.5, 0, 0.5, 0), AnchorPoint = Vector2.new(0.5, 0.5), ClipsDescendants = true, BackgroundTransparency = 1, Active = true})
-    local MainScale = Create("UIScale", {Parent = MainFrame, Scale = 0.85})
-    Create("UICorner", {Parent = MainFrame, CornerRadius = UDim.new(0, 0)})
-    Create("UIStroke", {Parent = MainFrame, Color = Color3.fromRGB(40, 40, 45), Thickness = 1})
+    local MainFrame = Create("Frame", {Parent = ScreenGui, BackgroundColor3 = BackgroundColor, Size = UDim2.new(0, 1080, 0, 680), Position = UDim2.new(0.5, 0, 0.5, 0), AnchorPoint = Vector2.new(0.5, 0.5), ClipsDescendants = true, BackgroundTransparency = 1, Active = true})
+    local MainScale = Create("UIScale", {Parent = MainFrame, Scale = 0.82})
+    Create("UICorner", {Parent = MainFrame, CornerRadius = UDim.new(0, 12)})
+    Create("UIStroke", {Parent = MainFrame, Color = Color3.fromRGB(0, 105, 175), Thickness = 1.2, Transparency = 0.15})
     Tween(MainScale, {Scale = 1}, 0.5)
     Tween(MainFrame, {BackgroundTransparency = 0}, 0.5)
 
-    local TopBar = Create("Frame", {Parent = MainFrame, BackgroundColor3 = BackgroundColor, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 70), Position = UDim2.new(0, 0, 0, 0), Active = true})
+    local TopBar = Create("Frame", {Parent = MainFrame, BackgroundColor3 = BackgroundColor, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 64), Position = UDim2.new(0, 0, 0, 0), Active = true})
     MakeDraggable(TopBar, MainFrame)
     
     local titleOffsetX = 15
@@ -352,8 +352,8 @@ function Library:CreateWindow(options)
     local Subtitle = Create("TextLabel", {Parent = TitleContainer, Text = subText, Font = Enum.Font.Gotham, TextSize = 10, TextColor3 = subColor, BackgroundTransparency = 1, Position = UDim2.new(0, 0, 0, 22), Size = UDim2.new(1, 0, 0, 12), TextXAlignment = Enum.TextXAlignment.Left})
 
     -- Bottom-centered feature search bar
-    local SearchBar = Create("Frame", {Parent = MainFrame, BackgroundColor3 = CardColor, Size = UDim2.new(0, 525, 0, 58), Position = UDim2.new(0.5, 0, 1, -28), AnchorPoint = Vector2.new(0.5, 1), ZIndex = 10})
-    Create("UICorner", {Parent = SearchBar, CornerRadius = UDim.new(0, 0)})
+    local SearchBar = Create("Frame", {Parent = MainFrame, BackgroundColor3 = CardColor, Size = UDim2.new(0, 525, 0, 52), Position = UDim2.new(0.5, 0, 1, -22), AnchorPoint = Vector2.new(0.5, 1), ZIndex = 10})
+    Create("UICorner", {Parent = SearchBar, CornerRadius = UDim.new(0, 12)})
     local SearchIcon = Create("ImageLabel", {Parent = SearchBar, BackgroundTransparency = 1, Image = "rbxassetid://6031154871", ImageColor3 = CyanColor, Size = UDim2.new(0, 24, 0, 24), Position = UDim2.new(0, 18, 0.5, -12), ZIndex = 11})
     local SearchInput = Create("TextBox", {Parent = SearchBar, BackgroundTransparency = 1, Size = UDim2.new(1, -65, 1, 0), Position = UDim2.new(0, 62, 0, 0), Font = Enum.Font.Gotham, TextSize = 16, TextColor3 = TextColor, PlaceholderText = "Search features...", TextXAlignment = Enum.TextXAlignment.Left, ClearTextOnFocus = false, ZIndex = 11})
 
@@ -361,11 +361,11 @@ function Library:CreateWindow(options)
     local MinBtn = Create("TextButton", {Parent = TopBar, Text = "—", Font = Enum.Font.GothamBold, TextSize = 14, TextColor3 = SubTextColor, BackgroundTransparency = 1, Size = UDim2.new(0, 30, 1, 0), Position = UDim2.new(1, -65, 0, 0)})
 
     -- Main tabs are now displayed horizontally across the top.
-    local TabContainer = Create("ScrollingFrame", {Parent = MainFrame, BackgroundTransparency = 1, Size = UDim2.new(1, -60, 0, 80), Position = UDim2.new(0, 30, 0, 75), ScrollBarThickness = 0, ScrollingDirection = Enum.ScrollingDirection.X, AutomaticCanvasSize = Enum.AutomaticSize.X, CanvasSize = UDim2.new(0, 0, 0, 0), ZIndex = 5})
-    local TabContainerLayout = Create("UIListLayout", {Parent = TabContainer, FillDirection = Enum.FillDirection.Horizontal, HorizontalAlignment = Enum.HorizontalAlignment.Center, VerticalAlignment = Enum.VerticalAlignment.Center, SortOrder = Enum.SortOrder.LayoutOrder, Padding = UDim.new(0, 14)})
+    local TabContainer = Create("ScrollingFrame", {Parent = MainFrame, BackgroundTransparency = 1, Size = UDim2.new(1, -80, 0, 82), Position = UDim2.new(0, 40, 0, 78), ScrollBarThickness = 0, ScrollingDirection = Enum.ScrollingDirection.X, AutomaticCanvasSize = Enum.AutomaticSize.X, CanvasSize = UDim2.new(0, 0, 0, 0), ZIndex = 5})
+    local TabContainerLayout = Create("UIListLayout", {Parent = TabContainer, FillDirection = Enum.FillDirection.Horizontal, HorizontalAlignment = Enum.HorizontalAlignment.Center, VerticalAlignment = Enum.VerticalAlignment.Center, SortOrder = Enum.SortOrder.LayoutOrder, Padding = UDim.new(0, 12)})
 
     -- Content sits below the top tabs and above the bottom search bar.
-    local ContentArea = Create("Frame", {Parent = MainFrame, BackgroundTransparency = 1, Size = UDim2.new(1, -60, 1, -175), Position = UDim2.new(0, 30, 0, 165), Active = true})
+    local ContentArea = Create("Frame", {Parent = MainFrame, BackgroundTransparency = 1, Size = UDim2.new(1, -80, 1, -178), Position = UDim2.new(0, 40, 0, 170), Active = true})
 
     local Sphere = Create("ImageButton", {Parent = ScreenGui, BackgroundColor3 = BackgroundColor, BackgroundTransparency = 0.2, Size = UDim2.new(0, 50, 0, 50), Position = UDim2.new(0.5, 0, 0.5, 0), AnchorPoint = Vector2.new(0.5, 0.5), Visible = false, AutoButtonColor = false, ImageTransparency = 1, ClipsDescendants = true})
     Create("UICorner", {Parent = Sphere, CornerRadius = UDim.new(0, 0)})
@@ -537,12 +537,12 @@ function Library:CreateWindow(options)
         end
 
         local TabContent = Create("Frame", {Parent = ContentArea, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 1, 0), Visible = false})
-        local PageNav = Create("Frame", {Parent = TabContent, BackgroundColor3 = CardColor, BackgroundTransparency = 0.15, Size = UDim2.new(0, 300, 1, 0), Position = UDim2.new(0, 0, 0, 0)})
-        Create("UICorner", {Parent = PageNav, CornerRadius = UDim.new(0, 10)})
+        local PageNav = Create("Frame", {Parent = TabContent, BackgroundColor3 = CardColor, BackgroundTransparency = 0.15, Size = UDim2.new(0, 270, 1, 0), Position = UDim2.new(0, 0, 0, 0)})
+        Create("UICorner", {Parent = PageNav, CornerRadius = UDim.new(0, 12)})
         Create("UIStroke", {Parent = PageNav, Color = BorderColor, Thickness = 1})
         local PageNavList = Create("UIListLayout", {Parent = PageNav, FillDirection = Enum.FillDirection.Vertical, HorizontalAlignment = Enum.HorizontalAlignment.Center, Padding = UDim.new(0, 10), VerticalAlignment = Enum.VerticalAlignment.Top, SortOrder = Enum.SortOrder.LayoutOrder})
         Create("UIPadding", {Parent = PageNav, PaddingTop = UDim.new(0, 10), PaddingLeft = UDim.new(0, 10), PaddingRight = UDim.new(0, 10)})
-        local PageContainer = Create("Frame", {Parent = TabContent, BackgroundTransparency = 1, Size = UDim2.new(1, -325, 1, 0), Position = UDim2.new(0, 325, 0, 0)})
+        local PageContainer = Create("Frame", {Parent = TabContent, BackgroundTransparency = 1, Size = UDim2.new(1, -295, 1, 0), Position = UDim2.new(0, 295, 0, 0)})
 
         local TabConfig = {Button = TabBtn, Content = TabContent, Indicator = Indicator, Txt = Txt, Pages = {}, CurrentPage = nil}
         table.insert(Window.Tabs, TabConfig)
@@ -594,11 +594,14 @@ function Library:CreateWindow(options)
 
         function TabConfig:CreatePage(pageName)
             local PageBtn = Create("TextButton", {Parent = PageNav, Text = pageName, Font = Enum.Font.Gotham, TextSize = 18, TextColor3 = SubTextColor, BackgroundColor3 = HoverColor, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 58), TextXAlignment = Enum.TextXAlignment.Left, AutoButtonColor = false})
+            PageBtn.TextScaled = false
+            PageBtn.TextSize = 16
+            PageBtn.TextXAlignment = Enum.TextXAlignment.Left
             Create("UICorner", {Parent = PageBtn, CornerRadius = UDim.new(0, 8)})
-            Create("UIPadding", {Parent = PageBtn, PaddingLeft = UDim.new(0, 62)})
-            local PageIcon = Create("ImageLabel", {Parent = PageBtn, BackgroundTransparency = 1, Image = (#TabConfig.Pages == 0 and "rbxassetid://6031075938" or "rbxassetid://6031075938"), ImageColor3 = CyanColor, Size = UDim2.new(0, 30, 0, 30), Position = UDim2.new(0, 18, 0.5, -15)})
+            Create("UIPadding", {Parent = PageBtn, PaddingLeft = UDim.new(0, 58)})
+            local PageIcon = Create("ImageLabel", {Parent = PageBtn, BackgroundTransparency = 1, Image = (#TabConfig.Pages == 0 and "rbxassetid://6031075938" or "rbxassetid://6031075938"), ImageColor3 = CyanColor, Size = UDim2.new(0, 24, 0, 24), Position = UDim2.new(0, 18, 0.5, -12)})
             local PageHighlight = Create("Frame", {Parent = PageBtn, BackgroundColor3 = AccentColor, Size = UDim2.new(0, 0, 0, 2), Position = UDim2.new(0, 0, 1, -5), AnchorPoint = Vector2.new(0.5, 0), BackgroundTransparency = 1})
-            local PageScroll = Create("ScrollingFrame", {Parent = PageContainer, BackgroundTransparency = 1, Size = UDim2.new(1, -10, 1, -10), Position = UDim2.new(0, 8, 0, 8), ScrollBarThickness = 2, ScrollBarImageColor3 = Color3.fromRGB(60, 60, 65), Visible = false, BorderSizePixel = 0})
+            local PageScroll = Create("ScrollingFrame", {Parent = PageContainer, BackgroundTransparency = 1, Size = UDim2.new(1, -16, 1, -16), Position = UDim2.new(0, 8, 0, 8), ScrollBarThickness = 2, ScrollBarImageColor3 = Color3.fromRGB(60, 60, 65), Visible = false, BorderSizePixel = 0})
 
             local LeftColumn = Create("Frame", {Parent = PageScroll, BackgroundTransparency = 1, Size = UDim2.new(0.5, -5, 1, 0)})
             local RightColumn = Create("Frame", {Parent = PageScroll, BackgroundTransparency = 1, Size = UDim2.new(0.5, -5, 1, 0), Position = UDim2.new(0.5, 5, 0, 0)})
@@ -642,9 +645,9 @@ function Library:CreateWindow(options)
                 local targetColumn = PageObj.Left and LeftColumn or RightColumn
                 PageObj.Left = not PageObj.Left
 
-                local SectionContainer = Create("Frame", {Parent = targetColumn, BackgroundColor3 = CardColor, Size = UDim2.new(1, 0, 0, 30), AutomaticSize = Enum.AutomaticSize.Y, ClipsDescendants = true})
-                Create("UICorner", {Parent = SectionContainer, CornerRadius = UDim.new(0, 10)})
-                Create("UIStroke", {Parent = SectionContainer, Color = BorderColor, Thickness = 1})
+                local SectionContainer = Create("Frame", {Parent = targetColumn, BackgroundColor3 = Color3.fromRGB(5, 24, 43), Size = UDim2.new(1, 0, 0, 30), AutomaticSize = Enum.AutomaticSize.Y, ClipsDescendants = true})
+                Create("UICorner", {Parent = SectionContainer, CornerRadius = UDim.new(0, 12)})
+                Create("UIStroke", {Parent = SectionContainer, Color = Color3.fromRGB(0, 105, 175), Thickness = 1.1, Transparency = 0.15})
                 
                 table.insert(Window.AllCards, {
                     Card = SectionContainer,
