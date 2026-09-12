@@ -1299,23 +1299,24 @@ function Library:CreateWindow(options)
 				{
 					Parent = PageContainer,
 					BackgroundTransparency = 1,
-					Size = UDim2.new(1, -20, 1, -18),
+					Size = UDim2.new(1, -12, 1, -18),
 					Position = UDim2.new(0, 10, 0, 8),
-					ScrollBarThickness = 2,
-					ScrollBarImageColor3 = Color3.fromRGB(57, 73, 97),
+					ScrollBarThickness = 5,
+					ScrollBarImageColor3 = Color3.fromRGB(91, 122, 165),
+					ScrollBarImageTransparency = 0.08,
 					Visible = false,
 					BorderSizePixel = 0,
 				}
 			)
 
 			local LeftColumn =
-				Create("Frame", { Parent = PageScroll, BackgroundTransparency = 1, Size = UDim2.new(0.5, -7, 1, -4), Position = UDim2.new(0, 2, 0, 2) })
+				Create("Frame", { Parent = PageScroll, BackgroundTransparency = 1, Size = UDim2.new(0.5, -11, 1, -4), Position = UDim2.new(0, 2, 0, 2) })
 			local RightColumn = Create(
 				"Frame",
 				{
 					Parent = PageScroll,
 					BackgroundTransparency = 1,
-					Size = UDim2.new(0.5, -7, 1, -4),
+					Size = UDim2.new(0.5, -15, 1, -4),
 					Position = UDim2.new(0.5, 5, 0, 2),
 				}
 			)
