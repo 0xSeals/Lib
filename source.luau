@@ -620,12 +620,12 @@ function Library:CreateWindow(options)
 			Position = UDim2.new(0.5, 0, 0.5, 0),
 			AnchorPoint = Vector2.new(0.5, 0.5),
 			ClipsDescendants = false,
-			BackgroundTransparency = 1,
+			BackgroundTransparency = 0,
 			Active = true,
 			ZIndex = 1,
 		}
 	)
-	local MainScale = Create("UIScale", { Parent = MainFrame, Scale = 0.8 })
+	local MainScale = Create("UIScale", { Parent = MainFrame, Scale = 1 })
 	Create("UICorner", { Parent = MainFrame, CornerRadius = UDim.new(0, 14) })
 	
 	-- No outer glow: keep the window edge clean and flat.
@@ -917,9 +917,6 @@ function Library:CreateWindow(options)
 		ToggleActionName,
 		function(_, inputState, inputObject)
 			if inputState == Enum.UserInputState.Begin and inputObject.KeyCode == ToggleKey then
-				if Popup.Visible then
-					return Enum.ContextActionResult.Sink
-				end
 				SetWindowVisible(not MainFrame.Visible, true)
 				return Enum.ContextActionResult.Sink
 			end
@@ -929,6 +926,13 @@ function Library:CreateWindow(options)
 		Enum.ContextActionPriority.High.Value,
 		ToggleKey
 	)
+
+	-- Fallback keyboard listener for executors that do not forward ContextActionService input reliably.
+	UserInputService.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == ToggleKey then
+			SetWindowVisible(not MainFrame.Visible, true)
+		end
+	end)
 
 	-- The old floating sphere is intentionally disabled; the keyboard toggle is the only minimize/re-open control.
 	Sphere.Visible = false
