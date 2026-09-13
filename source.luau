@@ -164,7 +164,7 @@ end
 local AccentColor = Color3.fromRGB(105, 157, 235)
 local AccentSoft = Color3.fromRGB(67, 94, 135)
 local BorderColor = Color3.fromRGB(48, 61, 82)
-local BackgroundColor = Color3.fromRGB(18, 22, 30)
+local BackgroundColor = Color3.fromRGB(21, 25, 34)
 local CardColor = Color3.fromRGB(18, 22, 30)
 local InputColor = Color3.fromRGB(12, 15, 21)
 local HoverColor = Color3.fromRGB(29, 37, 49)
@@ -300,11 +300,30 @@ function Library:CreateWindow(options)
 	-- // Global text-stroke protection: every current and future text object has no outline.
 	local function RemoveTextStroke(instance)
 		if instance:IsA("TextLabel") or instance:IsA("TextButton") or instance:IsA("TextBox") then
+			-- Force Roblox text-stroke off, even if another UI routine changes it later.
 			instance.TextStrokeTransparency = 1
+			instance.TextStrokeColor3 = Color3.new(0, 0, 0)
 			instance.TextScaled = false
+
 			local oldConstraint = instance:FindFirstChildOfClass("UITextSizeConstraint")
 			if oldConstraint then
 				oldConstraint:Destroy()
+			end
+
+			-- A UIStroke parented directly to a text object can also look like a text outline.
+			for _, child in ipairs(instance:GetChildren()) do
+				if child:IsA("UIStroke") then
+					child:Destroy()
+				end
+			end
+
+			if not instance:GetAttribute("MoonTextStrokeGuard") then
+				instance:SetAttribute("MoonTextStrokeGuard", true)
+				instance:GetPropertyChangedSignal("TextStrokeTransparency"):Connect(function()
+					if instance.TextStrokeTransparency ~= 1 then
+						instance.TextStrokeTransparency = 1
+					end
+				end)
 			end
 		end
 	end
@@ -2933,14 +2952,7 @@ function Library:CreateWindow(options)
 
 	-- Final text cleanup: guarantee that no text object in the library has an outline.
 	for _, root in ipairs(ScreenGui:GetDescendants()) do
-		if root:IsA("TextLabel") or root:IsA("TextButton") or root:IsA("TextBox") then
-			root.TextStrokeTransparency = 1
-			root.TextScaled = false
-			local oldConstraint = root:FindFirstChildOfClass("UITextSizeConstraint")
-			if oldConstraint then
-				oldConstraint:Destroy()
-			end
-		end
+		RemoveTextStroke(root)
 	end
 
 	return Window
