@@ -52,15 +52,12 @@ local function Create(className, properties)
 	end
 
 	if className == "TextLabel" or className == "TextButton" or className == "TextBox" then
+		-- Keep all MoonLib text completely clean: no Roblox text stroke and no
+		-- TextScaled/UITextSizeConstraint resampling, which can make small text
+		-- look like it has a faint outline.
 		instance.TextStrokeTransparency = 1
 		instance.TextStrokeColor3 = Color3.new(0, 0, 0)
-		if properties.TextSize and properties.RichText ~= true then
-			instance.TextScaled = true
-			local constraint = Instance.new("UITextSizeConstraint")
-			constraint.MaxTextSize = properties.TextSize
-			constraint.MinTextSize = 6
-			constraint.Parent = instance
-		end
+		instance.TextScaled = false
 	end
 
 	return instance
@@ -304,6 +301,11 @@ function Library:CreateWindow(options)
 	local function RemoveTextStroke(instance)
 		if instance:IsA("TextLabel") or instance:IsA("TextButton") or instance:IsA("TextBox") then
 			instance.TextStrokeTransparency = 1
+			instance.TextScaled = false
+			local oldConstraint = instance:FindFirstChildOfClass("UITextSizeConstraint")
+			if oldConstraint then
+				oldConstraint:Destroy()
+			end
 		end
 	end
 
@@ -2933,6 +2935,11 @@ function Library:CreateWindow(options)
 	for _, root in ipairs(ScreenGui:GetDescendants()) do
 		if root:IsA("TextLabel") or root:IsA("TextButton") or root:IsA("TextBox") then
 			root.TextStrokeTransparency = 1
+			root.TextScaled = false
+			local oldConstraint = root:FindFirstChildOfClass("UITextSizeConstraint")
+			if oldConstraint then
+				oldConstraint:Destroy()
+			end
 		end
 	end
 
