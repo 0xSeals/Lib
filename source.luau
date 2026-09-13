@@ -1817,8 +1817,8 @@ function Library:CreateWindow(options)
 						{
 							Parent = MainBtn,
 							Text = "▼",
-							Font = Enum.Font.Gotham,
-							TextSize = 10,
+							Font = Enum.Font.GothamBold,
+							TextSize = 14,
 							TextColor3 = SubTextColor,
 							BackgroundTransparency = 1,
 							Size = UDim2.new(0, 20, 1, 0),
