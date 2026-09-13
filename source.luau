@@ -300,6 +300,21 @@ function Library:CreateWindow(options)
 		IgnoreGuiInset = true,
 	})
 
+	-- // Global text-stroke protection: every current and future text object has no outline.
+	local function RemoveTextStroke(instance)
+		if instance:IsA("TextLabel") or instance:IsA("TextButton") or instance:IsA("TextBox") then
+			instance.TextStrokeTransparency = 1
+		end
+	end
+
+	for _, descendant in ipairs(ScreenGui:GetDescendants()) do
+		RemoveTextStroke(descendant)
+	end
+
+	ScreenGui.DescendantAdded:Connect(function(descendant)
+		RemoveTextStroke(descendant)
+	end)
+
 	local NotifContainer = Create("Frame", {
 		Parent = ScreenGui,
 		BackgroundTransparency = 1,
