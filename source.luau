@@ -1214,7 +1214,21 @@ function Library:CreateWindow(options)
 				ZIndex = 6,
 			}
 		)
-		Create("UICorner", { Parent = TabBtn, CornerRadius = UDim.new(0, 11) })
+		-- Tabs use rounded TOP corners only. Roblox UICorner rounds all corners,
+		-- so this small background mask squares off the bottom corners while
+		-- preserving the rounded top corners.
+		local TabCornerRadius = 11
+		Create("UICorner", { Parent = TabBtn, CornerRadius = UDim.new(0, TabCornerRadius) })
+		Create("Frame", {
+			Name = "TabBottomCornerMask",
+			Parent = TabBtn,
+			BackgroundColor3 = BackgroundColor,
+			BackgroundTransparency = 0,
+			BorderSizePixel = 0,
+			Size = UDim2.new(1, 0, 0, TabCornerRadius),
+			Position = UDim2.new(0, 0, 1, -TabCornerRadius),
+			ZIndex = 6,
+		})
 		AddBounce(TabBtn, 0.98)
 		-- Active highlight is underneath the tab instead of on the left.
 		local Indicator = Create(
