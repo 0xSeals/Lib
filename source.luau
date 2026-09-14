@@ -1770,14 +1770,16 @@ function Library:CreateWindow(options)
 						end
 
 						local function getKeyWidth(key)
-							if not key or key == Enum.KeyCode.Unknown then return 42 end
+							if not key or key == Enum.KeyCode.Unknown then
+								return 42
+							end
 							local name = key.Name
 							if name == "Backslash" then return 62 end
 							if name == "Period" then return 38 end
 							return math.clamp(math.max(38, (#name * 6) + 18), 38, 78)
 						end
-
 						local keyWidth = getKeyWidth(currentKey)
+
 						keyButton = Create("TextButton", {
 							Parent = TogFrame,
 							Text = currentKey.Name,
@@ -1857,7 +1859,6 @@ function Library:CreateWindow(options)
 							if typeof(key) == "EnumItem" and key.EnumType == Enum.KeyCode then
 								setKey(key)
 							end
-						end
 						end
 						element.GetKey = function()
 							return currentKey
