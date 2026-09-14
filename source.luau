@@ -1769,6 +1769,15 @@ function Library:CreateWindow(options)
 							currentKey = keybindData.Key or keybindData.Default or Enum.KeyCode.Unknown
 						end
 
+						local function getKeyWidth(key)
+							if not key or key == Enum.KeyCode.Unknown then return 42 end
+							local name = key.Name
+							if name == "Backslash" then return 62 end
+							if name == "Period" then return 38 end
+							return math.clamp(math.max(38, (#name * 6) + 18), 38, 78)
+						end
+
+						local keyWidth = getKeyWidth(currentKey)
 						keyButton = Create("TextButton", {
 							Parent = TogFrame,
 							Text = currentKey.Name,
@@ -1776,8 +1785,8 @@ function Library:CreateWindow(options)
 							TextSize = 10,
 							TextColor3 = TextColor,
 							BackgroundColor3 = InputColor,
-							Size = UDim2.new(0, 52, 0, 22),
-							Position = UDim2.new(1, -105, 0.5, -11),
+							Size = UDim2.new(0, keyWidth, 0, 22),
+							Position = UDim2.new(1, -(keyWidth + 56), 0.5, -11),
 							AutoButtonColor = false,
 						})
 						Create("UICorner", { Parent = keyButton, CornerRadius = UDim.new(0, 7) })
@@ -1793,7 +1802,12 @@ function Library:CreateWindow(options)
 
 						local function setKey(key)
 							currentKey = key
+							local width = getKeyWidth(key)
 							keyButton.Text = keyName(key)
+							Tween(keyButton, {
+								Size = UDim2.new(0, width, 0, 22),
+								Position = UDim2.new(1, -(width + 56), 0.5, -11),
+							}, 0.12)
 						end
 
 						keyButton.MouseButton1Click:Connect(function()
@@ -1841,9 +1855,9 @@ function Library:CreateWindow(options)
 					if keyButton then
 						element.SetKey = function(key)
 							if typeof(key) == "EnumItem" and key.EnumType == Enum.KeyCode then
-								currentKey = key
-								keyButton.Text = currentKey.Name:gsub("Left", "L "):gsub("Right", "R ")
+								setKey(key)
 							end
+						end
 						end
 						element.GetKey = function()
 							return currentKey
