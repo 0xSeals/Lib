@@ -1216,8 +1216,8 @@ function Library:CreateWindow(options)
 		)
 		-- Roblox UICorner rounds all four corners. To get rounded TOP corners
 		-- while keeping the bottom corners square, use two small bottom-corner
-		-- masks. They only cover the curved bottom corners and follow the tab's
-		-- active/inactive background.
+		-- masks. They fill only the curved bottom-corner cutouts with the
+		-- same background used by the active tab, leaving the bottom edge square.
 		local TabCornerRadius = 11
 		Create("UICorner", {
 			Parent = TabBtn,
@@ -1227,7 +1227,7 @@ function Library:CreateWindow(options)
 		local BottomLeftMask = Create("Frame", {
 			Name = "BottomLeftMask",
 			Parent = TabBtn,
-			BackgroundColor3 = AccentColor,
+			BackgroundColor3 = HoverColor,
 			BackgroundTransparency = 1,
 			BorderSizePixel = 0,
 			Size = UDim2.new(0, TabCornerRadius, 0, TabCornerRadius),
@@ -1237,7 +1237,7 @@ function Library:CreateWindow(options)
 		local BottomRightMask = Create("Frame", {
 			Name = "BottomRightMask",
 			Parent = TabBtn,
-			BackgroundColor3 = AccentColor,
+			BackgroundColor3 = HoverColor,
 			BackgroundTransparency = 1,
 			BorderSizePixel = 0,
 			Size = UDim2.new(0, TabCornerRadius, 0, TabCornerRadius),
