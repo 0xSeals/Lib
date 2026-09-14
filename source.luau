@@ -1214,15 +1214,35 @@ function Library:CreateWindow(options)
 				ZIndex = 6,
 			}
 		)
-		-- Tabs: round ONLY the two top corners. The newer UICorner
-		-- per-corner properties let us do this cleanly without a mask.
+		-- Roblox UICorner rounds all four corners. To get rounded TOP corners
+		-- while keeping the bottom corners square, use two small bottom-corner
+		-- masks. They only cover the curved bottom corners and follow the tab's
+		-- active/inactive background.
 		local TabCornerRadius = 11
 		Create("UICorner", {
 			Parent = TabBtn,
-			CornerTopLeft = UDim.new(0, TabCornerRadius),
-			CornerTopRight = UDim.new(0, TabCornerRadius),
-			CornerBottomLeft = UDim.new(0, 0),
-			CornerBottomRight = UDim.new(0, 0),
+			CornerRadius = UDim.new(0, TabCornerRadius),
+		})
+
+		local BottomLeftMask = Create("Frame", {
+			Name = "BottomLeftMask",
+			Parent = TabBtn,
+			BackgroundColor3 = AccentColor,
+			BackgroundTransparency = 1,
+			BorderSizePixel = 0,
+			Size = UDim2.new(0, TabCornerRadius, 0, TabCornerRadius),
+			Position = UDim2.new(0, 0, 1, -TabCornerRadius),
+			ZIndex = 6,
+		})
+		local BottomRightMask = Create("Frame", {
+			Name = "BottomRightMask",
+			Parent = TabBtn,
+			BackgroundColor3 = AccentColor,
+			BackgroundTransparency = 1,
+			BorderSizePixel = 0,
+			Size = UDim2.new(0, TabCornerRadius, 0, TabCornerRadius),
+			Position = UDim2.new(1, -TabCornerRadius, 1, -TabCornerRadius),
+			ZIndex = 6,
 		})
 		AddBounce(TabBtn, 0.98)
 		-- Active highlight is underneath the tab instead of on the left.
@@ -1296,7 +1316,16 @@ function Library:CreateWindow(options)
 		)
 
 		local TabConfig =
-			{ Button = TabBtn, Content = TabContent, Indicator = Indicator, Txt = Txt, Pages = {}, CurrentPage = nil }
+			{
+				Button = TabBtn,
+				Content = TabContent,
+				Indicator = Indicator,
+				Txt = Txt,
+				BottomLeftMask = BottomLeftMask,
+				BottomRightMask = BottomRightMask,
+				Pages = {},
+				CurrentPage = nil
+			}
 		table.insert(Window.Tabs, TabConfig)
 
 		TabBtn.MouseButton1Click:Connect(function()
@@ -1311,6 +1340,8 @@ function Library:CreateWindow(options)
 
 			if Window.CurrentTab then
 				Tween(Window.CurrentTab.Button, { BackgroundTransparency = 1 }, 0.2)
+				Tween(Window.CurrentTab.BottomLeftMask, { BackgroundTransparency = 1 }, 0.2)
+				Tween(Window.CurrentTab.BottomRightMask, { BackgroundTransparency = 1 }, 0.2)
 				Tween(Window.CurrentTab.Indicator, { Size = UDim2.new(0, 0, 0, 2) }, 0.2)
 				Tween(Window.CurrentTab.Txt, { TextColor3 = SubTextColor }, 0.2)
 				Window.CurrentTab.Content.Visible = false
@@ -1323,6 +1354,8 @@ function Library:CreateWindow(options)
 			Tween(TabConfig.Content, { Position = UDim2.new(0, 0, 0, 0) }, 0.35)
 
 			Tween(TabBtn, { BackgroundTransparency = 0 }, 0.2)
+			Tween(BottomLeftMask, { BackgroundTransparency = 0 }, 0.2)
+			Tween(BottomRightMask, { BackgroundTransparency = 0 }, 0.2)
 			Tween(Indicator, { Size = UDim2.new(1, 0, 0, 2) }, 0.3)
 			Tween(Txt, { TextColor3 = TextColor }, 0.2)
 
