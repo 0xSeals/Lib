@@ -255,8 +255,8 @@ function Library:CreateWindow(options)
 	local sphWords = "ZX"
 	local sphImage = nil
 	local topbarLogo = nil
-	local logoSize = 32
-	local sphIconSize = 26
+	local logoSize = 38
+	local sphIconSize = 30
 	local ToggleKey = Enum.KeyCode.RightShift
 
 	if type(options) == "table" then
