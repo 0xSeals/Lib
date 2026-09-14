@@ -361,7 +361,7 @@ function Library:CreateWindow(options)
 			"Frame",
 			{
 				Parent = NotifContainer,
-				BackgroundColor3 = CardColor,
+				BackgroundColor3 = BackgroundColor,
 				Size = UDim2.new(1, 0, 0, 70),
 				BackgroundTransparency = 1,
 				ZIndex = 201,
@@ -370,7 +370,7 @@ function Library:CreateWindow(options)
 		)
 		Create("UICorner", { Parent = Notif, CornerRadius = UDim.new(0, 14) })
 
-		local Stroke = Create("UIStroke", { Parent = Notif, Color = AccentColor, Thickness = 1.5, Transparency = 1 })
+		local Stroke = Create("UIStroke", { Parent = Notif, Color = BorderColor, Thickness = 1.5, Transparency = 1 })
 		local NotifScale = Create("UIScale", { Parent = Notif, Scale = 0.94 })
 
 		local LockIcon = Create(
@@ -406,7 +406,10 @@ function Library:CreateWindow(options)
 			"TextLabel",
 			{
 				Parent = Notif,
-				Text = 'This Is For <font color="#BA70FF"><b>Whitelisted Users</b></font>',
+				Text = string.format(
+					'This Is For <font color="#%s"><b>Whitelisted Users</b></font>',
+					subColor:ToHex()
+				),
 				RichText = true,
 				Font = Enum.Font.Gotham,
 				TextSize = 14,
