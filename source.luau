@@ -666,6 +666,13 @@ function Library:CreateWindow(options)
 	)
 	local MainScale = Create("UIScale", { Parent = MainFrame, Scale = 1 })
 	Create("UICorner", { Parent = MainFrame, CornerRadius = UDim.new(0, 14) })
+	Create("UIStroke", {
+		Parent = MainFrame,
+		Color = BorderColor,
+		Thickness = 1.5,
+		Transparency = 0,
+		ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+	})
 	
 	-- No outer glow: keep the window edge clean and flat.
 
