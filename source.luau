@@ -976,21 +976,34 @@ function Library:CreateWindow(options)
 		end)
 	end
 
-	-- High-priority listener catches the key even when Roblox marks it as processed.
+	-- High-priority keyboard binding. The action is rebound whenever the user
+	-- changes the window hotkey.
 	local ToggleActionName = "MoonLib_Toggle_" .. tostring(math.random(100000, 999999))
-	ContextActionService:BindActionAtPriority(
-		ToggleActionName,
-		function(_, inputState, inputObject)
-			if inputState == Enum.UserInputState.Begin and inputObject.KeyCode == ToggleKey then
-				ToggleWindow()
-				return Enum.ContextActionResult.Sink
-			end
-			return Enum.ContextActionResult.Pass
-		end,
-		false,
-		Enum.ContextActionPriority.High.Value,
-		ToggleKey
-	)
+	local ToggleBound = false
+
+	local function BindToggleKey()
+		if ToggleBound then
+			ContextActionService:UnbindAction(ToggleActionName)
+			ToggleBound = false
+		end
+
+		ContextActionService:BindActionAtPriority(
+			ToggleActionName,
+			function(_, inputState, inputObject)
+				if inputState == Enum.UserInputState.Begin and inputObject.KeyCode == ToggleKey then
+					ToggleWindow()
+					return Enum.ContextActionResult.Sink
+				end
+				return Enum.ContextActionResult.Pass
+			end,
+			false,
+			Enum.ContextActionPriority.High.Value,
+			ToggleKey
+		)
+		ToggleBound = true
+	end
+
+	BindToggleKey()
 
 	-- Fallback listener. The same debounce prevents a single key press from
 	-- opening and immediately closing the window when both listeners fire.
@@ -999,6 +1012,21 @@ function Library:CreateWindow(options)
 			ToggleWindow()
 		end
 	end)
+
+	function Window:SetToggleKey(newKey)
+		if typeof(newKey) ~= "EnumItem" or newKey.EnumType ~= Enum.KeyCode then
+			warn("MoonLib: SetToggleKey expects an Enum.KeyCode")
+			return false
+		end
+
+		ToggleKey = newKey
+		BindToggleKey()
+		return true
+	end
+
+	function Window:GetToggleKey()
+		return ToggleKey
+	end
 
 	-- The old floating sphere is intentionally disabled; the keyboard toggle is the only minimize/re-open control.
 	Sphere.Visible = false
@@ -1652,11 +1680,18 @@ function Library:CreateWindow(options)
 					AddInfoIcon(BtnFrame, UDim2.new(1, -40, 0.5, -8), infoData)
 				end
 
-				function Elements:AddToggle(name, default, callback, infoData)
+				function Elements:AddToggle(name, default, callback, infoData, keybindData)
 					local state = default or false
+					-- infoData supports:
+					-- { Title = "...", Description = "...", Example = "..." }
+					-- so the toggle can use the same title/description system as
+					-- the other MoonLib controls.
+					if typeof(infoData) ~= "table" then
+						infoData = nil
+					end
 					local TogFrame = Create(
 						"Frame",
-						{ Parent = ItemContainer, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 24) }
+						{ Parent = ItemContainer, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 30) }
 					)
 
 					Create(
@@ -1668,7 +1703,7 @@ function Library:CreateWindow(options)
 							TextSize = 12,
 							TextColor3 = SubTextColor,
 							BackgroundTransparency = 1,
-							Size = UDim2.new(1, -60, 1, 0),
+							Size = UDim2.new(1, -115, 1, 0),
 							Position = UDim2.new(0, 10, 0, 0),
 							TextXAlignment = Enum.TextXAlignment.Left,
 						}
@@ -1715,14 +1750,205 @@ function Library:CreateWindow(options)
 					Lever.MouseButton1Click:Connect(function()
 						internalSet(not state)
 					end)
+
 					AddInfoIcon(TogFrame, UDim2.new(1, -70, 0.5, -8), infoData)
 
-					Window.ConfigElements[name] = {
+					local keyButton
+					local currentKey
+					local listening = false
+
+					if keybindData then
+						-- Supports:
+						-- { Key = Enum.KeyCode.Q, Callback = function() end }
+						-- { Default = Enum.KeyCode.Q, Callback = function() end }
+						-- or simply Enum.KeyCode.Q
+						if typeof(keybindData) == "EnumItem" then
+							currentKey = keybindData
+							keybindData = { Key = keybindData }
+						else
+							currentKey = keybindData.Key or keybindData.Default or Enum.KeyCode.Unknown
+						end
+
+						keyButton = Create("TextButton", {
+							Parent = TogFrame,
+							Text = currentKey.Name,
+							Font = Enum.Font.GothamMedium,
+							TextSize = 10,
+							TextColor3 = TextColor,
+							BackgroundColor3 = InputColor,
+							Size = UDim2.new(0, 52, 0, 22),
+							Position = UDim2.new(1, -105, 0.5, -11),
+							AutoButtonColor = false,
+						})
+						Create("UICorner", { Parent = keyButton, CornerRadius = UDim.new(0, 7) })
+						Create("UIStroke", { Parent = keyButton, Color = BorderColor, Thickness = 1 })
+						AddBounce(keyButton)
+
+						local function keyName(key)
+							if typeof(key) == "EnumItem" then
+								return key.Name:gsub("Left", "L "):gsub("Right", "R ")
+							end
+							return tostring(key)
+						end
+
+						local function setKey(key)
+							currentKey = key
+							keyButton.Text = keyName(key)
+						end
+
+						keyButton.MouseButton1Click:Connect(function()
+							if listening then return end
+							listening = true
+							keyButton.Text = "..."
+							Tween(keyButton, { BackgroundColor3 = HoverColor }, 0.15)
+						end)
+
+						UserInputService.InputBegan:Connect(function(input, gameProcessed)
+							if not listening or input.UserInputType ~= Enum.UserInputType.Keyboard then return end
+							if input.KeyCode == Enum.KeyCode.Unknown then return end
+
+							listening = false
+							Tween(keyButton, { BackgroundColor3 = InputColor }, 0.15)
+
+							if input.KeyCode == Enum.KeyCode.Backspace or input.KeyCode == Enum.KeyCode.Delete then
+								setKey(Enum.KeyCode.Unknown)
+							else
+								setKey(input.KeyCode)
+							end
+						end)
+
+						UserInputService.InputBegan:Connect(function(input, gameProcessed)
+							if listening or input.UserInputType ~= Enum.UserInputType.Keyboard then return end
+							if currentKey == Enum.KeyCode.Unknown or input.KeyCode ~= currentKey then return end
+
+							if keybindData.Toggle ~= false then
+								internalSet(not state)
+							end
+
+							if keybindData.Callback then
+								keybindData.Callback(state)
+							end
+						end)
+					end
+
+					local element = {
 						Set = internalSet,
 						Get = function()
 							return state
 						end,
 					}
+
+					if keyButton then
+						element.SetKey = function(key)
+							if typeof(key) == "EnumItem" and key.EnumType == Enum.KeyCode then
+								currentKey = key
+								keyButton.Text = currentKey.Name:gsub("Left", "L "):gsub("Right", "R ")
+							end
+						end
+						element.GetKey = function()
+							return currentKey
+						end
+					end
+
+					Window.ConfigElements[name] = element
+				end
+
+				-- Toggle + keybind with the same Title/Description/Example
+				-- metadata supported by the other controls.
+				--
+				-- Example:
+				-- Card:AddToggleKeybind("Aimbot", false, Enum.KeyCode.Q, function(state) end, {
+				--     Title = "Aimbot Module",
+				--     Description = "Automatically aims at the nearest target.",
+				--     Example = "Press Q to toggle."
+				-- })
+				function Elements:AddToggleKeybind(name, default, defaultKey, callback, infoData, keyCallback)
+					return self:AddToggle(name, default, callback, infoData, {
+						Key = defaultKey,
+						Callback = keyCallback,
+					})
+				end
+
+				function Elements:AddKeybind(name, defaultKey, callback, infoData)
+					local currentKey = defaultKey or Enum.KeyCode.Unknown
+					local listening = false
+
+					local BindFrame = Create(
+						"Frame",
+						{ Parent = ItemContainer, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 30) }
+					)
+
+					Create("TextLabel", {
+						Parent = BindFrame,
+						Text = name,
+						Font = Enum.Font.Gotham,
+						TextSize = 12,
+						TextColor3 = SubTextColor,
+						BackgroundTransparency = 1,
+						Size = UDim2.new(1, -105, 1, 0),
+						Position = UDim2.new(0, 10, 0, 0),
+						TextXAlignment = Enum.TextXAlignment.Left,
+					})
+
+					local KeyButton = Create("TextButton", {
+						Parent = BindFrame,
+						Text = currentKey.Name,
+						Font = Enum.Font.GothamMedium,
+						TextSize = 11,
+						TextColor3 = TextColor,
+						BackgroundColor3 = InputColor,
+						Size = UDim2.new(0, 78, 0, 24),
+						Position = UDim2.new(1, -88, 0.5, -12),
+						AutoButtonColor = false,
+					})
+					Create("UICorner", { Parent = KeyButton, CornerRadius = UDim.new(0, 7) })
+					Create("UIStroke", { Parent = KeyButton, Color = BorderColor, Thickness = 1 })
+					AddBounce(KeyButton)
+
+					local function KeyName(key)
+						if typeof(key) == "EnumItem" then
+							return key.Name:gsub("Left", "L "):gsub("Right", "R ")
+						end
+						return tostring(key)
+					end
+
+					local function SetKey(key)
+						currentKey = key
+						KeyButton.Text = KeyName(key)
+					end
+
+					KeyButton.MouseButton1Click:Connect(function()
+						if listening then return end
+						listening = true
+						KeyButton.Text = "Press key..."
+						Tween(KeyButton, { BackgroundColor3 = HoverColor }, 0.15)
+					end)
+
+					local inputConnection
+					inputConnection = UserInputService.InputBegan:Connect(function(input, gameProcessed)
+						if not listening or input.UserInputType ~= Enum.UserInputType.Keyboard then return end
+						if input.KeyCode == Enum.KeyCode.Unknown then return end
+
+						listening = false
+						Tween(KeyButton, { BackgroundColor3 = InputColor }, 0.15)
+
+						if input.KeyCode == Enum.KeyCode.Backspace or input.KeyCode == Enum.KeyCode.Delete then
+							SetKey(Enum.KeyCode.Unknown)
+						else
+							SetKey(input.KeyCode)
+						end
+					end)
+
+					Window.ConfigElements[name] = {
+						Set = function(key)
+							if typeof(key) == "EnumItem" and key.EnumType == Enum.KeyCode then
+								SetKey(key)
+							end
+						end,
+						Get = function() return currentKey end,
+					}
+
+					AddInfoIcon(BindFrame, UDim2.new(1, -100, 0.5, -8), infoData)
 				end
 
 				function Elements:AddSlider(name, min, max, default, callback, infoData)
